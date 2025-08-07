@@ -9,7 +9,6 @@ export default function LoginScreen() {
   const scrollRef = useRef<ScrollView>(null);
 
   const handleFocus = () => {
-    // Timeout para garantir que o teclado já abriu antes de dar scroll
     setTimeout(() => {
       scrollRef.current?.scrollToEnd({ animated: true });
     }, 300);

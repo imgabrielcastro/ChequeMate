@@ -7,13 +7,18 @@ import InputWithIcon from "../../../components/InputWithIcon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ButtonConfirm from "./ButtonConfirm";
+import * as Animatable from "react-native-animatable";
+import { isValidEmail } from "../../../utils/validators";
+import { useEmailField } from "../../../hooks/useEmailField";
 
 export default function LoginForm() {
   const [checked, setChecked] = useState(false);
   const onToggleCheck = () => setChecked(!checked);
 
+  const { email, error, onChange } = useEmailField();
+
   return (
-    <View
+    <Animatable.View
       style={{
         flex: 1,
         backgroundColor: theme.colors.secondary,
@@ -21,6 +26,7 @@ export default function LoginForm() {
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
       }}
+      animation="fadeInUp"
     >
       <VStack style={{ paddingTop: 16 }}>
         <Text
@@ -34,9 +40,19 @@ export default function LoginForm() {
           Informe seu e-mail para acessar:
         </Text>
 
-        <InputWithIcon icon={faEnvelope} placeholder="seuemail@email.com" />
+        <InputWithIcon 
+          icon={faEnvelope} 
+          placeholder="seuemail@email.com" 
+          onChangeText={onChange}
+          value={email}
+        />
+        {error ? (
+          <Text style={{ color: 'red', marginTop: 4, fontSize: 14 }}>
+            {error}
+          </Text>
+        ) : null}
 
-        <View style={{ flexDirection: "row", paddingVertical: 30 }}>
+        <View style={{ flexDirection: "row", paddingVertical: 20 }}>
           <TouchableOpacity
             onPress={onToggleCheck}
             style={{ flexDirection: "row", alignItems: "center" }}
@@ -59,6 +75,6 @@ export default function LoginForm() {
 
         <ButtonConfirm />
       </VStack>
-    </View>
+    </Animatable.View>
   );
 }

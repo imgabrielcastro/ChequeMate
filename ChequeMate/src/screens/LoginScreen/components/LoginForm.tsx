@@ -8,10 +8,9 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
-import { isValidEmail } from "../../../utils/validators";
 import { useEmailField } from "../../../hooks/useEmailField";
 
-export default function LoginForm() {
+export default function LoginForm({ onInputFocus }: { onInputFocus: () => void }) {
   const [checked, setChecked] = useState(false);
   const onToggleCheck = () => setChecked(!checked);
 
@@ -45,6 +44,7 @@ export default function LoginForm() {
           placeholder="seuemail@email.com" 
           onChangeText={onChange}
           value={email}
+          onFocus={onInputFocus}
         />
         {error ? (
           <Text style={{ color: 'red', marginTop: 4, fontSize: 14 }}>

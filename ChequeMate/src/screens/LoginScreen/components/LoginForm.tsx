@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, KeyboardAvoidingView, TouchableOpacity, Platform } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { theme } from "../../../themes/theme";
 import { Text } from "react-native-paper";
 import VStack from "../../../components/Stacks/VStack/index";
@@ -11,20 +11,18 @@ import ButtonConfirm from "./ButtonConfirm";
 export default function LoginForm() {
   const [checked, setChecked] = useState(false);
   const onToggleCheck = () => setChecked(!checked);
-  const [keyboardVisible, setKeyboardVisible] = useState(false);
-
 
   return (
-    <KeyboardAvoidingView
+    <View
       style={{
         flex: 1,
         backgroundColor: theme.colors.secondary,
-        padding: 26,
+        padding: 22,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-      }}  behavior={Platform.OS === "ios" ? "padding" : "height"}
+      }}
     >
-      <VStack style={{ paddingTop: 26 }}>
+      <VStack style={{ paddingTop: 16 }}>
         <Text
           style={{
             color: theme.colors.text,
@@ -61,6 +59,6 @@ export default function LoginForm() {
 
         <ButtonConfirm />
       </VStack>
-    </KeyboardAvoidingView>
+    </View>
   );
 }

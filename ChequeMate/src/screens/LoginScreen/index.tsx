@@ -5,11 +5,11 @@ import LogoHeader from "./components/LogoHeader";
 import LoginShowcase from "./components/LoginShowcase";
 import LoginForm from "./components/LoginForm";
 import PasswordForm from "./components/PasswordForm";
+import type { FC } from 'react';
 
-export default function LoginScreen() {
+const LoginScreen: FC = () => {
   const scrollRef = useRef<ScrollView>(null);
   const [firstPage, setFirstPage] = useState<boolean>(true);
-  const [showLoginForm, setShowLoginForm] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
 
   const handleFocus = () => {
@@ -18,18 +18,12 @@ export default function LoginScreen() {
     }, 300);
   };
 
-  const handleConfirm = (enteredEmail: string) => {
+  const handleEmailConfirm = (enteredEmail: string) => {
     setEmail(enteredEmail);
-    setFirstPage(false);
-  };
-
-  const handleContinue = () => {
-    setShowLoginForm(true);
     setFirstPage(false);
   };
   
   const handleBack = () => {
-    setShowLoginForm(false);
     setFirstPage(true);
   };
 
@@ -45,9 +39,25 @@ export default function LoginScreen() {
         keyboardShouldPersistTaps="handled"
       >
         <LogoHeader />
-        {!firstPage ? null : <LoginShowcase />}
-        {firstPage ? <LoginForm onInputFocus={handleFocus} onConfirm={(enteredEmail) => handleConfirm(enteredEmail)} /> : <PasswordForm onInputFocus={handleFocus} onConfirm={(enteredPassword) => handleConfirm(enteredPassword)} onSwitch={handleBack} email={email} />}
+        {firstPage && <LoginShowcase />}
+        {firstPage ? (
+          <LoginForm 
+            onInputFocus={handleFocus} 
+            onConfirm={handleEmailConfirm} 
+          />
+        ) : (
+          <PasswordForm 
+            onInputFocus={handleFocus} 
+            onConfirm={(enteredPassword) => {
+              console.log('Password submitted for email:', email);
+            }} 
+            onSwitch={handleBack} 
+            email={email} 
+          />
+        )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
-}
+};
+
+export default LoginScreen;

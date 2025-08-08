@@ -10,5 +10,6 @@ export const theme = {
       background: '#0D1216',
       text: '#FFFFFF',
       input: '#2A2E33',
+      disabled: '#5A5E63',
     },
   };

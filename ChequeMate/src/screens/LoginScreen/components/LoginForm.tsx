@@ -10,11 +10,38 @@ import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
 import { useEmailField } from "../../../hooks/useEmailField";
 
-export default function LoginForm({ onInputFocus, onConfirm }: { onInputFocus: () => void; onConfirm: (email: string) => void }) {
+interface LoginFormProps {
+  onInputFocus: () => void;
+  onConfirm: (email: string) => void;
+}
+
+export default function LoginForm({ onInputFocus, onConfirm }: LoginFormProps) {
   const [checked, setChecked] = useState(false);
   const onToggleCheck = () => setChecked(!checked);
 
   const { email, error, onChange } = useEmailField();
+  const [touched, setTouched] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+
+  const handleSubmit = () => {
+    setSubmitAttempted(true);
+    if (!email.trim()) {
+      return;
+    }
+    if (!error) {
+      onConfirm(email);
+    }
+  };
+
+  const handleInputChange = (text: string) => {
+    if (submitAttempted) {
+      setSubmitAttempted(false);
+    }
+    onChange(text);
+  };
+
+  const showError = submitAttempted && (!email.trim() || Boolean(error));
+  const errorMessage = !email.trim() ? 'Informe seu e-mail' : error || '';
 
   return (
     <Animatable.View
@@ -42,15 +69,16 @@ export default function LoginForm({ onInputFocus, onConfirm }: { onInputFocus: (
         <InputWithIcon 
           icon={faEnvelope} 
           placeholder="seuemail@email.com" 
-          onChangeText={onChange}
+          onChangeText={handleInputChange}
           value={email}
           onFocus={onInputFocus}
+          error={showError ? errorMessage : undefined}
         />
-        {error ? (
+        {showError && (
           <Text style={{ color: 'red', marginTop: 4, fontSize: 14 }}>
-            {error}
+            {errorMessage}
           </Text>
-        ) : null}
+        )}
 
         <View style={{ flexDirection: "row", paddingVertical: 20 }}>
           <TouchableOpacity
@@ -73,7 +101,7 @@ export default function LoginForm({ onInputFocus, onConfirm }: { onInputFocus: (
           </TouchableOpacity>
         </View>
 
-        <ButtonConfirm onPress={() => onConfirm(email)} />
+        <ButtonConfirm onPress={handleSubmit} />
       </VStack>
     </Animatable.View>
   );

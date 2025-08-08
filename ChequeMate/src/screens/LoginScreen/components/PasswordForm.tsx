@@ -9,13 +9,30 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
 import { useEmailField } from "../../../hooks/useEmailField";
+import { TextInput } from "react-native-paper";
+import HStack from "../../../components/Stacks/HStack/index";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
-export default function PasswordForm({ onInputFocus, onConfirm, onSwitch, email }: { onInputFocus: () => void; onConfirm: (password: string) => void; onSwitch: () => void; email: string }) {
-  const [checked, setChecked] = useState(false);
-  const onToggleCheck = () => setChecked(!checked);
-  const [password, setPassword] = useState('');
+export default function PasswordForm({
+  onInputFocus,
+  onConfirm,
+  onSwitch,
+  email,
+}: {
+  onInputFocus: () => void;
+  onConfirm: (password: string) => void;
+  onSwitch: () => void;
+  email: string;
+}) {
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const { error } = useEmailField();
 
-  const { error, onChange } = useEmailField();
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <Animatable.View
@@ -25,21 +42,47 @@ export default function PasswordForm({ onInputFocus, onConfirm, onSwitch, email 
         padding: 22,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
-        
       }}
       animation="fadeInUp"
     >
+     
       <VStack style={{ paddingTop: 16 }}>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
-          <Text style={{ color: theme.colors.text, fontSize: 16 }}>
-            {email}
-          </Text>
-          <TouchableOpacity onPress={onSwitch}>
-            <Text style={{ color: theme.colors.primary, fontSize: 16 }}>
-              Trocar
+
+      
+      <View style={{ marginBottom: 16 }}>
+        <View style={{width: '100%' }}>
+          <InputWithIcon 
+            icon={faEnvelope}
+            placeholder={email}
+            value={email}
+            editable={false}
+            pointerEvents="none"
+            style={{color: theme.colors.text, fontSize: 16 }}
+          />
+          <TouchableOpacity 
+            onPress={onSwitch} 
+            style={{
+              position: 'absolute',
+              right: 0,
+              top: 0,
+              height: '100%',
+              justifyContent: 'center',
+              paddingHorizontal: 12,
+            }}
+          >
+            <Text
+              style={{
+                color: theme.colors.primary,
+                fontSize: 16,
+                fontWeight: 'bold',
+              }}
+            >
+              Alterar
             </Text>
           </TouchableOpacity>
         </View>
+      </View>
+
         <Text
           style={{
             color: theme.colors.text,
@@ -51,18 +94,20 @@ export default function PasswordForm({ onInputFocus, onConfirm, onSwitch, email 
           Informe sua senha:
         </Text>
 
-        <InputWithIcon 
-          icon={faLock} 
-          placeholder="Informe sua Senha" 
+
+        <InputWithIcon
+          icon={faLock}
+          placeholder="Informe sua Senha"
           onChangeText={setPassword}
           value={password}
           onFocus={onInputFocus}
+          secureTextEntry={!showPassword}
+          rightIcon={{
+            icon: showPassword ? faEyeSlash : faEye,
+            onPress: togglePasswordVisibility
+          }}
         />
-        {error ? (
-          <Text style={{ color: 'red', marginTop: 4, fontSize: 14 }}>
-            {error}
-          </Text>
-        ) : null}
+
 
         <ButtonConfirm onPress={() => onConfirm(password)} />
       </VStack>

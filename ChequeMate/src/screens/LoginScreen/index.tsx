@@ -46,7 +46,7 @@ export default function LoginScreen() {
       >
         <LogoHeader />
         {!firstPage ? null : <LoginShowcase />}
-        {firstPage ? <LoginForm onInputFocus={handleFocus} onConfirm={(enteredEmail) => handleConfirm(enteredEmail)} /> : <PasswordForm onInputFocus={handleFocus} onConfirm={handleConfirm} onSwitch={handleBack} email={email} />}
+        {firstPage ? <LoginForm onInputFocus={handleFocus} onConfirm={(enteredEmail) => handleConfirm(enteredEmail)} /> : <PasswordForm onInputFocus={handleFocus} onConfirm={(enteredPassword) => handleConfirm(enteredPassword)} onSwitch={handleBack} email={email} />}
       </ScrollView>
     </KeyboardAvoidingView>
   );

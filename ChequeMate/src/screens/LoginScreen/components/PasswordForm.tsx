@@ -10,7 +10,7 @@ import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
 import { useEmailField } from "../../../hooks/useEmailField";
 
-export default function PasswordForm({ onInputFocus, onConfirm, onSwitch, email }: { onInputFocus: () => void; onConfirm: () => void; onSwitch: () => void; email: string }) {
+export default function PasswordForm({ onInputFocus, onConfirm, onSwitch, email }: { onInputFocus: () => void; onConfirm: (password: string) => void; onSwitch: () => void; email: string }) {
   const [checked, setChecked] = useState(false);
   const onToggleCheck = () => setChecked(!checked);
   const [password, setPassword] = useState('');
@@ -64,7 +64,7 @@ export default function PasswordForm({ onInputFocus, onConfirm, onSwitch, email 
           </Text>
         ) : null}
 
-        <ButtonConfirm onPress={onConfirm} />
+        <ButtonConfirm onPress={() => onConfirm(password)} />
       </VStack>
     </Animatable.View>
   );

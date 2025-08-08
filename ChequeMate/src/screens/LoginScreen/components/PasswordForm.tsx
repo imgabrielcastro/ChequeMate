@@ -1,38 +1,32 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { theme } from "../../../themes/theme";
 import { Text } from "react-native-paper";
-import VStack from "../../../components/Stacks/VStack/index";
-import InputWithIcon from "../../../components/InputWithIcon";
-import { faLock } from "@fortawesome/free-solid-svg-icons";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import ButtonConfirm from "./ButtonConfirm";
-import * as Animatable from "react-native-animatable";
-import { useEmailField } from "../../../hooks/useEmailField";
-import { TextInput } from "react-native-paper";
-import HStack from "../../../components/Stacks/HStack/index";
+import { faLock, faEnvelope, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
-import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import * as Animatable from "react-native-animatable";
+
+import { theme } from "../../../themes/theme";
+import VStack from "../../../components/Stacks/VStack";
+import InputWithIcon from "../../../components/InputWithIcon";
+import ButtonConfirm from "./ButtonConfirm";
+
+interface PasswordFormProps {
+  onInputFocus: () => void;
+  onSubmit: () => void;
+  onBack: () => void;
+  email: string;
+}
 
 export default function PasswordForm({
   onInputFocus,
-  onConfirm,
-  onSwitch,
+  onSubmit,
+  onBack,
   email,
-}: {
-  onInputFocus: () => void;
-  onConfirm: (password: string) => void;
-  onSwitch: () => void;
-  email: string;
-}) {
+}: PasswordFormProps) {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { error } = useEmailField();
 
-  const togglePasswordVisibility = () => {
-    setShowPassword(!showPassword);
-  };
+  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   return (
     <Animatable.View
@@ -45,55 +39,47 @@ export default function PasswordForm({
       }}
       animation="fadeInUp"
     >
-     
       <VStack style={{ paddingTop: 16 }}>
-
-      
-      <View style={{ marginBottom: 16 }}>
-        <View style={{width: '100%' }}>
-          <InputWithIcon 
-            icon={faEnvelope}
-            placeholder={email}
-            value={email}
-            editable={false}
-            pointerEvents="none"
-            style={{color: theme.colors.text, fontSize: 16 }}
-          />
-          <TouchableOpacity 
-            onPress={onSwitch} 
-            style={{
-              position: 'absolute',
-              right: 0,
-              top: 0,
-              height: '100%',
-              justifyContent: 'center',
-              paddingHorizontal: 12,
-            }}
-          >
-            <Text
+        <View style={{ marginBottom: 16 }}>
+          <View style={{ width: '100%' }}>
+            <InputWithIcon 
+              icon={faEnvelope}
+              placeholder={email}
+              value={email}
+              editable={false}
+              pointerEvents="none"
+              style={{ color: theme.colors.text, fontSize: 16 }}
+            />
+            <TouchableOpacity 
+              onPress={onBack}
               style={{
+                position: 'absolute',
+                right: 0,
+                top: 0,
+                height: '100%',
+                justifyContent: 'center',
+                paddingHorizontal: 12,
+              }}
+            >
+              <Text style={{
                 color: theme.colors.primary,
                 fontSize: 16,
                 fontWeight: 'bold',
-              }}
-            >
-              Alterar
-            </Text>
-          </TouchableOpacity>
+              }}>
+                Alterar
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
 
-        <Text
-          style={{
-            color: theme.colors.text,
-            fontSize: 18,
-            marginTop: 10,
-            marginBottom: 18,
-          }}
-        >
+        <Text style={{
+          color: theme.colors.text,
+          fontSize: 18,
+          marginTop: 10,
+          marginBottom: 18,
+        }}>
           Informe sua senha:
         </Text>
-
 
         <InputWithIcon
           icon={faLock}
@@ -108,8 +94,7 @@ export default function PasswordForm({
           }}
         />
 
-
-        <ButtonConfirm onPress={() => onConfirm(password)} />
+        <ButtonConfirm onPress={onSubmit} />
       </VStack>
     </Animatable.View>
   );

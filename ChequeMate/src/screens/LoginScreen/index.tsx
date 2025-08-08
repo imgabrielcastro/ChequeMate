@@ -1,37 +1,42 @@
-import { View, Platform, KeyboardAvoidingView, ScrollView } from "react-native";
+import { KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useRef, useState } from "react";
 import { theme } from "../../themes/theme";
 import LogoHeader from "./components/LogoHeader";
 import LoginShowcase from "./components/LoginShowcase";
 import LoginForm from "./components/LoginForm";
 import PasswordForm from "./components/PasswordForm";
-import type { FC } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from "../../navigation/RootStack";
 
-const LoginScreen: FC = () => {
+type LoginScreenProps = NativeStackScreenProps<RootStackParamList, 'Login'>;
+
+export default function LoginScreen({ navigation }: LoginScreenProps) {
   const scrollRef = useRef<ScrollView>(null);
-  const [firstPage, setFirstPage] = useState<boolean>(true);
-  const [email, setEmail] = useState<string>('');
+  const [currentStep, setCurrentStep] = useState<'email' | 'password'>('email');
+  const [email, setEmail] = useState('');
 
   const handleFocus = () => {
-    setTimeout(() => {
-      scrollRef.current?.scrollToEnd({ animated: true });
-    }, 300);
+    setTimeout(() => scrollRef.current?.scrollToEnd({ animated: true }), 300);
   };
 
-  const handleEmailConfirm = (enteredEmail: string) => {
+  const handleEmailSubmit = (enteredEmail: string) => {
     setEmail(enteredEmail);
-    setFirstPage(false);
+    setCurrentStep('password');
   };
   
-  const handleBack = () => {
-    setFirstPage(true);
+  const handleBackToEmail = () => {
+    setCurrentStep('email');
+  };
+
+  const handleLoginSuccess = () => {
+    navigation.replace('AppTabs');
   };
 
   return (
     <KeyboardAvoidingView
       style={{ flex: 1, backgroundColor: theme.colors.background }}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 0}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={0}
     >
       <ScrollView
         ref={scrollRef}
@@ -39,25 +44,24 @@ const LoginScreen: FC = () => {
         keyboardShouldPersistTaps="handled"
       >
         <LogoHeader />
-        {firstPage && <LoginShowcase />}
-        {firstPage ? (
-          <LoginForm 
-            onInputFocus={handleFocus} 
-            onConfirm={handleEmailConfirm} 
-          />
+        
+        {currentStep === 'email' ? (
+          <>
+            <LoginShowcase />
+            <LoginForm 
+              onInputFocus={handleFocus} 
+              onSubmit={handleEmailSubmit} 
+            />
+          </>
         ) : (
           <PasswordForm 
-            onInputFocus={handleFocus} 
-            onConfirm={(enteredPassword) => {
-              console.log('Password submitted for email:', email);
-            }} 
-            onSwitch={handleBack} 
+            onInputFocus={handleFocus}
+            onSubmit={handleLoginSuccess} 
+            onBack={handleBackToEmail} 
             email={email} 
           />
         )}
       </ScrollView>
     </KeyboardAvoidingView>
   );
-};
-
-export default LoginScreen;
+}

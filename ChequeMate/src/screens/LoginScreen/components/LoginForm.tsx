@@ -1,47 +1,33 @@
 import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
-import { theme } from "../../../themes/theme";
 import { Text } from "react-native-paper";
-import VStack from "../../../components/Stacks/VStack/index";
-import InputWithIcon from "../../../components/InputWithIcon";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import { theme } from "../../../themes/theme";
+import VStack from "../../../components/Stacks/VStack";
+import InputWithIcon from "../../../components/InputWithIcon";
 import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
-import { useEmailField } from "../../../hooks/useEmailField";
 
 interface LoginFormProps {
   onInputFocus: () => void;
-  onConfirm: (email: string) => void;
+  onSubmit: (email: string) => void;
 }
 
-export default function LoginForm({ onInputFocus, onConfirm }: LoginFormProps) {
+export default function LoginForm({ onInputFocus, onSubmit }: LoginFormProps) {
+  const [email, setEmail] = useState('');
   const [checked, setChecked] = useState(false);
-  const onToggleCheck = () => setChecked(!checked);
-
-  const { email, error, onChange } = useEmailField();
-  const [touched, setTouched] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
   const handleSubmit = () => {
     setSubmitAttempted(true);
-    if (!email.trim()) {
-      return;
-    }
-    if (!error) {
-      onConfirm(email);
+    if (email.trim()) {
+      onSubmit(email);
     }
   };
 
-  const handleInputChange = (text: string) => {
-    if (submitAttempted) {
-      setSubmitAttempted(false);
-    }
-    onChange(text);
-  };
-
-  const showError = submitAttempted && (!email.trim() || Boolean(error));
-  const errorMessage = !email.trim() ? 'Informe seu e-mail' : error || '';
+  const showError = submitAttempted && !email.trim();
+  const errorMessage = 'Informe seu e-mail';
 
   return (
     <Animatable.View
@@ -55,25 +41,24 @@ export default function LoginForm({ onInputFocus, onConfirm }: LoginFormProps) {
       animation="fadeInUp"
     >
       <VStack style={{ paddingTop: 16 }}>
-        <Text
-          style={{
-            color: theme.colors.text,
-            fontSize: 18,
-            marginTop: 10,
-            marginBottom: 18,
-          }}
-        >
+        <Text style={{
+          color: theme.colors.text,
+          fontSize: 18,
+          marginTop: 10,
+          marginBottom: 18,
+        }}>
           Informe seu e-mail para acessar:
         </Text>
 
         <InputWithIcon 
           icon={faEnvelope} 
           placeholder="seuemail@email.com" 
-          onChangeText={handleInputChange}
+          onChangeText={setEmail}
           value={email}
           onFocus={onInputFocus}
           error={showError ? errorMessage : undefined}
         />
+
         {showError && (
           <Text style={{ color: 'red', marginTop: 4, fontSize: 14 }}>
             {errorMessage}
@@ -82,20 +67,15 @@ export default function LoginForm({ onInputFocus, onConfirm }: LoginFormProps) {
 
         <View style={{ flexDirection: "row", paddingVertical: 20 }}>
           <TouchableOpacity
-            onPress={onToggleCheck}
+            onPress={() => setChecked(!checked)}
             style={{ flexDirection: "row", alignItems: "center" }}
           >
             <MaterialCommunityIcons
-              name={
-                checked ? "checkbox-marked-outline" : "checkbox-blank-outline"
-              }
+              name={checked ? "checkbox-marked-outline" : "checkbox-blank-outline"}
               size={24}
               color={theme.colors.primary}
             />
-
-            <Text
-              style={{ color: theme.colors.text, marginLeft: 8, fontSize: 16 }}
-            >
+            <Text style={{ color: theme.colors.text, marginLeft: 8, fontSize: 16 }}>
               Lembrar meu e-mail
             </Text>
           </TouchableOpacity>

@@ -4,17 +4,18 @@ import { theme } from "../../../themes/theme";
 import { Text } from "react-native-paper";
 import VStack from "../../../components/Stacks/VStack/index";
 import InputWithIcon from "../../../components/InputWithIcon";
-import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
 import { useEmailField } from "../../../hooks/useEmailField";
 
-export default function LoginForm({ onInputFocus, onConfirm }: { onInputFocus: () => void; onConfirm: (email: string) => void }) {
+export default function PasswordForm({ onInputFocus, onConfirm, onSwitch, email }: { onInputFocus: () => void; onConfirm: () => void; onSwitch: () => void; email: string }) {
   const [checked, setChecked] = useState(false);
   const onToggleCheck = () => setChecked(!checked);
+  const [password, setPassword] = useState('');
 
-  const { email, error, onChange } = useEmailField();
+  const { error, onChange } = useEmailField();
 
   return (
     <Animatable.View
@@ -24,10 +25,21 @@ export default function LoginForm({ onInputFocus, onConfirm }: { onInputFocus: (
         padding: 22,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
+        
       }}
       animation="fadeInUp"
     >
       <VStack style={{ paddingTop: 16 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 }}>
+          <Text style={{ color: theme.colors.text, fontSize: 16 }}>
+            {email}
+          </Text>
+          <TouchableOpacity onPress={onSwitch}>
+            <Text style={{ color: theme.colors.primary, fontSize: 16 }}>
+              Trocar
+            </Text>
+          </TouchableOpacity>
+        </View>
         <Text
           style={{
             color: theme.colors.text,
@@ -36,14 +48,14 @@ export default function LoginForm({ onInputFocus, onConfirm }: { onInputFocus: (
             marginBottom: 18,
           }}
         >
-          Informe seu e-mail para acessar:
+          Informe sua senha:
         </Text>
 
         <InputWithIcon 
-          icon={faEnvelope} 
-          placeholder="seuemail@email.com" 
-          onChangeText={onChange}
-          value={email}
+          icon={faLock} 
+          placeholder="Informe sua Senha" 
+          onChangeText={setPassword}
+          value={password}
           onFocus={onInputFocus}
         />
         {error ? (
@@ -52,28 +64,7 @@ export default function LoginForm({ onInputFocus, onConfirm }: { onInputFocus: (
           </Text>
         ) : null}
 
-        <View style={{ flexDirection: "row", paddingVertical: 20 }}>
-          <TouchableOpacity
-            onPress={onToggleCheck}
-            style={{ flexDirection: "row", alignItems: "center" }}
-          >
-            <MaterialCommunityIcons
-              name={
-                checked ? "checkbox-marked-outline" : "checkbox-blank-outline"
-              }
-              size={24}
-              color={theme.colors.primary}
-            />
-
-            <Text
-              style={{ color: theme.colors.text, marginLeft: 8, fontSize: 16 }}
-            >
-              Lembrar meu e-mail
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <ButtonConfirm onPress={() => onConfirm(email)} />
+        <ButtonConfirm onPress={onConfirm} />
       </VStack>
     </Animatable.View>
   );

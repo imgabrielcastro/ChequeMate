@@ -9,6 +9,7 @@ import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
 import InputWithIcon from "../../../components/InputWithIcon";
 import ButtonConfirm from "./ButtonConfirm";
+import { usePasswordField } from "../../../hooks/usePasswordField";
 
 interface PasswordFormProps {
   onInputFocus: () => void;
@@ -23,10 +24,20 @@ export default function PasswordForm({
   onBack,
   email,
 }: PasswordFormProps) {
-  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+  const { password, error, onChange, setError } = usePasswordField();
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
+  
+  const handleSubmit = () => {
+    setSubmitAttempted(true);
+    if (!password.trim()) {
+      setError('Informe sua senha');
+      return;
+    }
+    onSubmit();
+  };
 
   return (
     <Animatable.View
@@ -84,17 +95,24 @@ export default function PasswordForm({
         <InputWithIcon
           icon={faLock}
           placeholder="Informe sua Senha"
-          onChangeText={setPassword}
+          onChangeText={onChange}
           value={password}
           onFocus={onInputFocus}
           secureTextEntry={!showPassword}
+          error={submitAttempted ? error : undefined}
           rightIcon={{
             icon: showPassword ? faEyeSlash : faEye,
             onPress: togglePasswordVisibility
           }}
         />
+        
+        {submitAttempted && error ? (
+          <Text style={{ color: 'red', marginTop: 4, fontSize: 14 }}>
+            {error}
+          </Text>
+        ) : null}
 
-        <ButtonConfirm onPress={onSubmit} />
+        <ButtonConfirm onPress={handleSubmit} />
       </VStack>
     </Animatable.View>
   );

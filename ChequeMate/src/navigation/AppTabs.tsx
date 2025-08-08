@@ -3,7 +3,6 @@ import HomeScreen from "../screens/HomeScreen";
 
 export type AppTabsParamList = {
   Home: undefined;
-  // Adicione outras telas aqui se necessário
 };
 
 const Tab = createBottomTabNavigator<AppTabsParamList>();

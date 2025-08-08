@@ -8,6 +8,7 @@ import VStack from "../../../components/Stacks/VStack";
 import InputWithIcon from "../../../components/InputWithIcon";
 import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
+import { useEmailField } from "../../../hooks/useEmailField";
 
 interface LoginFormProps {
   onInputFocus: () => void;
@@ -15,19 +16,19 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onInputFocus, onSubmit }: LoginFormProps) {
-  const [email, setEmail] = useState('');
   const [checked, setChecked] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
+  const { email, error, onChange } = useEmailField();
 
   const handleSubmit = () => {
     setSubmitAttempted(true);
-    if (email.trim()) {
+    if (email.trim() && !error) {
       onSubmit(email);
     }
   };
 
-  const showError = submitAttempted && !email.trim();
-  const errorMessage = 'Informe seu e-mail';
+  const showError = (submitAttempted && !email.trim()) || (submitAttempted && error);
+  const errorMessage = error || 'Informe seu e-mail';
 
   return (
     <Animatable.View
@@ -53,10 +54,13 @@ export default function LoginForm({ onInputFocus, onSubmit }: LoginFormProps) {
         <InputWithIcon 
           icon={faEnvelope} 
           placeholder="seuemail@email.com" 
-          onChangeText={setEmail}
+          onChangeText={onChange}
           value={email}
           onFocus={onInputFocus}
           error={showError ? errorMessage : undefined}
+          autoCapitalize="none"
+          autoCorrect={false}
+          keyboardType="email-address"
         />
 
         {showError && (

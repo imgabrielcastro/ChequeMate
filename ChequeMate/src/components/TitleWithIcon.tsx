@@ -1,7 +1,7 @@
 import { Text } from "react-native-paper";
 import { theme } from "../themes/theme";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import HStack from "../components/Stacks/HStack";
+import HStack from "./Stacks/HStack";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function TittleWithIcon({

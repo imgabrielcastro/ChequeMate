@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import TittleWithIcon from "../../components/TittleWithIcon";
+import TittleWithIcon from "../../components/TitleWithIcon";
 import ContainerItens from "./components/ContainerItens";
 
 const HomeScreen = () => {

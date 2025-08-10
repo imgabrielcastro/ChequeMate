@@ -1,10 +1,13 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import TittleWithIcon from "../../components/TittleWithIcon";
+import ContainerItens from "./components/ContainerItens";
 
 const HomeScreen = () => {
     return (
         <View>
-            <Text>teste</Text>
+            <TittleWithIcon title="Olá, José Gabriel!" icon="menu" />
+            <ContainerItens />
         </View>
     );
 };

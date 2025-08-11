@@ -4,6 +4,7 @@ import { View } from "react-native";
 import VStack from "../../../components/Stacks/VStack";
 import TextTitle from "../../../components/TextTitle";
 import { ScrollView } from "react-native-gesture-handler";
+import ReciveInMonth from "./ReciveInMonth";
 
 export default function ContainerItens() {
   return (
@@ -25,9 +26,10 @@ export default function ContainerItens() {
 
         <Text variant="titleLarge" style={{ color: theme.colors.text, paddingVertical: 32 }}>Valores a receber durante o mês: </Text>
 
-        <VStack style={{ backgroundColor: theme.colors.input, borderRadius: 10 }}>
-            
-
+        <VStack style={{ backgroundColor: theme.colors.input, borderRadius: 10,  }}>
+            <ReciveInMonth name="José Gabriel" value="100" />
+            <ReciveInMonth name="Vinicius de Moraes" value="200" />
+            <ReciveInMonth name="Maria da Silva" value="300" />
         </VStack>
 
         </ScrollView>

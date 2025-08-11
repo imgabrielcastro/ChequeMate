@@ -1,6 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import { theme } from "../../src/themes/theme";
+import { TouchableOpacity } from "react-native";
+
 
 export type AppTabsParamList = {
   Início: undefined;
@@ -18,8 +20,9 @@ export function AppTabs() {
     tabBarStyle: {
       backgroundColor: theme.colors.input,
       paddingHorizontal: 10,
-      height: 90,
+      height: 110,
       borderTopWidth: 0, 
+      
     },
     tabBarLabelStyle: {
       fontWeight: 'bold',

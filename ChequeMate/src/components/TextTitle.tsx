@@ -11,7 +11,7 @@ export default function TextTitle({
 }) {
     return (
         <View>
-            <Text variant="headlineMedium" style={{ color: color, fontWeight: 'bold'}}>{title}</Text>
+            <Text variant="headlineSmall" style={{ color: color, fontWeight: 'bold'}}>{title}</Text>
         </View>
     );
 }

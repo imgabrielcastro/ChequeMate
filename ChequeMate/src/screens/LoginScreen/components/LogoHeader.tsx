@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, View } from "react-native";
+import {  View } from "react-native";
 import { theme } from "../../../themes/theme";
 import { Text } from "react-native-paper";
 import * as Animatable from "react-native-animatable";

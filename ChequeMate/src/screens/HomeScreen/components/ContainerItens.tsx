@@ -5,6 +5,9 @@ import VStack from "../../../components/Stacks/VStack";
 import TextTitle from "../../../components/TextTitle";
 import { ScrollView } from "react-native-gesture-handler";
 import ReciveInMonth from "./ReciveInMonth";
+import ReceivingAmounts from "./ReceivingAmounts";
+import HStack from "../../../components/Stacks/HStack";
+import AddButton from "../../../components/AddButton";
 
 export default function ContainerItens() {
   return (
@@ -32,7 +35,14 @@ export default function ContainerItens() {
             <ReciveInMonth name="Maria da Silva" value="300" />
         </VStack>
 
+        <HStack style={{ justifyContent: "space-between", paddingVertical: 12, gap: 12 }}>
+        <ReceivingAmounts text="Recebidos no mês:" value="600,00" />
+        <ReceivingAmounts text="Valores a receber" value="1200,00" />
+        </HStack>
+
+
         </ScrollView>
+        <AddButton />
       </VStack>
     </View>
   );

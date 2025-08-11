@@ -41,6 +41,7 @@ const InputWithIcon = (props: InputInfoProps) => {
         <FontAwesomeIcon icon={icon} size={24} color={theme.colors.primary} />
         <TextInput
           placeholderTextColor={"#A3A3A3"}
+          keyboardAppearance="dark"
           style={{
             flex: 1,
             color: theme.colors.text,

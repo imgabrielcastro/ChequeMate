@@ -3,6 +3,8 @@ import { theme } from "../themes/theme";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import HStack from "./Stacks/HStack";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 
 export default function TittleWithIcon({
   title,
@@ -24,7 +26,7 @@ export default function TittleWithIcon({
       >
         {title}
       </Text>
-      <Icon name={icon} size={32} color={theme.colors.primary} />
+      <FontAwesomeIcon icon={icon} size={32} color={theme.colors.primary} />
     </HStack>
     </SafeAreaView>
   );

@@ -7,7 +7,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import ReciveInMonth from "./ReciveInMonth";
 import ReceivingAmounts from "./ReceivingAmounts";
 import HStack from "../../../components/Stacks/HStack";
-import AddButton from "../../../components/AddButton";
 
 export default function ContainerItens() {
   return (
@@ -27,7 +26,7 @@ export default function ContainerItens() {
           <TextTitle title="Mais controle." color={theme.colors.primary} />
           <TextTitle title="Menos estresse." color={"#A3A3A3"} />
 
-        <Text variant="titleLarge" style={{ color: theme.colors.text, paddingVertical: 32 }}>Valores a receber durante o mês: </Text>
+        <Text variant="titleLarge" style={{ color: theme.colors.text, paddingVertical: 16 }}>Valores a receber durante o mês: </Text>
 
         <VStack style={{ backgroundColor: theme.colors.input, borderRadius: 10,  }}>
             <ReciveInMonth name="José Gabriel" value="100" />
@@ -42,7 +41,6 @@ export default function ContainerItens() {
 
 
         </ScrollView>
-        <AddButton />
       </VStack>
     </View>
   );

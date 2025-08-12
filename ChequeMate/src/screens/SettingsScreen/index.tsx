@@ -1,21 +1,27 @@
 import { theme } from "../../themes/theme";
 import { View } from "react-native";
 import VStack from "../../components/Stacks/VStack";
-import TextTitle from "../../components/TextTitle";
+import TextTitle from "../../components/Texts/TextTitle";
 import { SafeAreaView } from "react-native-safe-area-context";
 import HStack from "../../components/Stacks/HStack";
 import TittleWithIcon from "../../components/Texts/TitleWithIcon";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import BackAndTitle from "../../components/Texts/BackAndTitle";
 import ContainerItens from "./components/ContainerItens";
+import { ScrollView } from "react-native-gesture-handler";
 
 export default function SettingsScreen({ navigation }: { navigation: any }) {
-    return (
-        <VStack style={{ backgroundColor: theme.colors.background }}>
-            <VStack style={{paddingHorizontal: 20}}>
-                <BackAndTitle title="Configurações" icon={faArrowLeft} navigation={navigation} />
-            </VStack>
-            <ContainerItens />
-        </VStack>
-    );
+  return (
+    <VStack style={{ backgroundColor: theme.colors.background }}>
+      <VStack style={{ paddingHorizontal: 20 }}>
+        <BackAndTitle
+          title="Configurações"
+          icon={faArrowLeft}
+          navigation={navigation}
+        />
+       
+      </VStack>
+        <ContainerItens />  
+    </VStack>
+  );
 }

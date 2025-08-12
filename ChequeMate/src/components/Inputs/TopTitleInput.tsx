@@ -1,6 +1,7 @@
 import { TextInput } from "react-native-paper";
 import { theme } from "../../themes/theme";
 import VStack from "../Stacks/VStack";
+import {Text} from "react-native-paper";
 
 export default function TopTitleInput({
   value,
@@ -14,14 +15,21 @@ export default function TopTitleInput({
   error?: string;
 }) {
   return (
-    <VStack style={{ padding: 20, borderRadius: 12, gap: 8 }}>
+    <VStack style={{ padding: 20, borderRadius: 12, gap: 4 }}>
+        <Text variant="titleMedium" style={{ color: theme.colors.text }}>{title}</Text>
+        
       <TextInput
-        label={title}
         value={value}
         onChangeText={(text: string) => setValue(text)}
-        style={{ backgroundColor: theme.colors.input }}
+        style={{ backgroundColor: theme.colors.input, height: 45 }}
+        mode="outlined"
         theme={{
-          colors: { primary: theme.colors.text, text: theme.colors.text, placeholder: theme.colors.text },
+          colors: {
+            primary: theme.colors.input,
+            text: theme.colors.text,
+            onSurface: theme.colors.text,
+            placeholder: "#FFFFFF", 
+          },
         }}
       />
     </VStack>

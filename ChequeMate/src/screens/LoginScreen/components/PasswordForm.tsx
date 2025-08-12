@@ -7,7 +7,7 @@ import * as Animatable from "react-native-animatable";
 
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
-import InputWithIcon from "../../../components/InputWithIcon";
+import InputWithIcon from "../../../components/Inputs/InputWithIcon";
 import ButtonConfirm from "./ButtonConfirm";
 import { usePasswordField } from "../../../hooks/usePasswordField";
 

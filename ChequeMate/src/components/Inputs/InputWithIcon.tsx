@@ -3,9 +3,9 @@ import { TextInput, TouchableOpacity, View } from "react-native";
 import { TextInputProps } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
-import VStack from "../components/Stacks/VStack";
-import HStack from "../components/Stacks/HStack";
-import { theme } from "../themes/theme";
+import VStack from "../Stacks/VStack";
+import HStack from "../Stacks/HStack";
+import { theme } from "../../themes/theme";
 
 interface InputInfoProps extends Omit<TextInputProps, 'style'> {
   icon: IconDefinition;

@@ -2,7 +2,7 @@ import { Text } from "react-native-paper";
 import { theme } from "../../../themes/theme";
 import { View } from "react-native";
 import VStack from "../../../components/Stacks/VStack";
-import TextTitle from "../../../components/TextTitle";
+import TextTitle from "../../../components/Texts/TextTitle";
 import { ScrollView } from "react-native-gesture-handler";
 import ReciveInMonth from "./ReciveInMonth";
 import ReceivingAmounts from "./ReceivingAmounts";

@@ -5,7 +5,7 @@ import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
-import InputWithIcon from "../../../components/InputWithIcon";
+import InputWithIcon from "../../../components/Inputs/InputWithIcon";
 import ButtonConfirm from "./ButtonConfirm";
 import * as Animatable from "react-native-animatable";
 import { useEmailField } from "../../../hooks/useEmailField";

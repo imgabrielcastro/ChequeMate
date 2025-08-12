@@ -1,4 +1,4 @@
-import { theme } from "../themes/theme";
+import { theme } from "../../themes/theme";
 import { TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";

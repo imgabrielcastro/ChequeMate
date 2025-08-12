@@ -5,13 +5,16 @@ import HStack from "./Stacks/HStack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+import { TouchableOpacity } from "react-native";
 
 export default function TittleWithIcon({
   title,
   icon,
+  navigation,
 }: {
   title: string;
-  icon: string;
+  icon: IconDefinition;
+  navigation: any;
 }) {
   return (
     <SafeAreaView style={{backgroundColor: theme.colors.background}}>
@@ -26,7 +29,9 @@ export default function TittleWithIcon({
       >
         {title}
       </Text>
-      <FontAwesomeIcon icon={icon} size={32} color={theme.colors.primary} />
+      <TouchableOpacity onPress={() => {navigation.navigate("Settings")}}>
+      <FontAwesomeIcon icon={icon} size={24} color={theme.colors.primary} />
+      </TouchableOpacity>
     </HStack>
     </SafeAreaView>
   );

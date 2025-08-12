@@ -6,10 +6,10 @@ import AddButton from "../../components/AddButton";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faGear } from "@fortawesome/free-solid-svg-icons";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: { navigation: any }) => {
     return (
         <View>
-            <TittleWithIcon title="Olá, José Gabriel!" icon={faGear} />
+            <TittleWithIcon title="Olá, José Gabriel!" icon={faGear} navigation={navigation} />
             <ContainerItens />
             <AddButton />
         </View>

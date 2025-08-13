@@ -10,7 +10,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         <View>
             <TittleWithIcon title="Olá, José Gabriel!" icon={faGear} navigation={navigation} />
             <ContainerItens />
-            <AddButton />
+            <AddButton page="NewClient" />
         </View>
     );
 };

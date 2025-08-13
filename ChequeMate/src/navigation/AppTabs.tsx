@@ -1,10 +1,10 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "../screens/HomeScreen";
 import { theme } from "../../src/themes/theme";
 import { TouchableOpacity } from "react-native";
 import type { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
-import ClientsScreen from "../screens/ClientsScreen";
-import ChequesScreen from "../screens/ChequesScreen";
+import ClientsScreen from "../screens/ClientsList";
+import ChequesScreen from "../screens/ChequeList";
+import Home from "../screens/Home";
 
 export type AppTabsParamList = {
   Início: undefined;
@@ -47,7 +47,7 @@ export function AppTabs() {
     >
       <Tab.Screen
         name="Início"
-        component={HomeScreen}
+        component={Home}
         options={{
           tabBarLabel: "Início",
           tabBarIcon: () => null,

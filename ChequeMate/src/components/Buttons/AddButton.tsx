@@ -2,9 +2,10 @@ import { theme } from "../../themes/theme";
 import { TouchableOpacity } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { Text } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
-export default function AddButton() {
+export default function AddButton({ page }: { page: string }) {
+    const navigation = useNavigation<any>();
     return (
         <TouchableOpacity style={{
             backgroundColor: theme.colors.primary,
@@ -23,7 +24,7 @@ export default function AddButton() {
             position: "absolute",
             zIndex: 2,
             marginBottom: "15%",
-        }}>
+        }} onPress={() => navigation.navigate(page)}>
             <FontAwesomeIcon icon={faPlus} color={theme.colors.background} size={24} />
         </TouchableOpacity>
     );

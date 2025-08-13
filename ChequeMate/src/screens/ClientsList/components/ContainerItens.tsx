@@ -27,7 +27,7 @@ export default function ContainerItens() {
           <ClientList />
         </View>
         <View style={{ alignSelf: "flex-end", bottom: 10  }}>
-            <AddButton />
+            <AddButton page="NewClient" />
           </View>
       </VStack>
     </View>

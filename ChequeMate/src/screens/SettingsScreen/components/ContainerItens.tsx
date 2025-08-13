@@ -56,8 +56,8 @@ export default function ContainerItens() {
             error={mailError}
           />
         <HStack style={{ alignItems: "center", justifyContent: "center", paddingVertical: 16 }}>
-          <ButtonChange value="Alterar senha" />
-          <ButtonChange value="Desconectar" />
+          <ButtonChange value="Alterar senha" page="ChangePassword" />
+          <ButtonChange value="Desconectar" page="Login" />
           </HStack>
 
           <ButtonSave value="Salvar" />

@@ -3,8 +3,7 @@ import VStack from "../../../components/Stacks/VStack";
 import { View } from "react-native";
 import { ScrollView } from "react-native";
 import SearchComponent from "../../../components/Inputs/SearchComponent";
-import { ClientList } from "./ClientList";
-import AddButton from "../../../components/Buttons/AddButton";
+import { ChequeList } from "./ChequesList";
 
 export default function ContainerItens() {
   return (
@@ -16,19 +15,16 @@ export default function ContainerItens() {
           height: "100%",
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
-          marginTop: -20,
+          marginTop: -20, 
         }}
       >
-        <View style={{ paddingVertical: 12 }}>
+        <View style={{ alignItems: "center", paddingVertical: 12 }}>
           <SearchComponent />
         </View>
 
-        <View style={{ padding: 12, flex: 1 }}>
-          <ClientList />
+        <View style={{padding: 12, flex: 1}}>
+          <ChequeList />
         </View>
-        <View style={{ alignSelf: "flex-end", bottom: 10  }}>
-            <AddButton />
-          </View>
       </VStack>
     </View>
   );

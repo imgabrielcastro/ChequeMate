@@ -4,6 +4,7 @@ import { theme } from "../../src/themes/theme";
 import { TouchableOpacity } from "react-native";
 import type { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
 import ClientsScreen from "../screens/ClientsScreen";
+import ChequesScreen from "../screens/ChequesScreen";
 
 export type AppTabsParamList = {
   Início: undefined;
@@ -64,7 +65,7 @@ export function AppTabs() {
       />
       <Tab.Screen
         name="Cheques"
-        component={HomeScreen}
+        component={ChequesScreen}
         options={{
           tabBarLabel: "Cheques",
           tabBarIcon: () => null,

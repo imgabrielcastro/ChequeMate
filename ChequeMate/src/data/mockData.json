@@ -79,29 +79,82 @@
       "sexo": "Feminino",
       "telefone": "(48) 95555-4444",
       "cidade": "Palhoça"
-    },{
+    },
+    {
       "id": 11,
       "nome": "Saymon Espíndola",
       "idade": 27,
       "sexo": "Masculino",
       "telefone": "(47) 97777-6666",
       "cidade": "Jaraguá do Sul"
-    },{
+    },
+    {
       "id": 12,
       "nome": "Saymon Espíndola",
       "idade": 27,
       "sexo": "Masculino",
       "telefone": "(47) 97777-6666",
       "cidade": "Jaraguá do Sul"
-    }
-
-    ,{
+    },
+    {
       "id": 13,
       "nome": "Saymon Espíndola",
       "idade": 27,
       "sexo": "Masculino",
       "telefone": "(47) 97777-6666",
       "cidade": "Jaraguá do Sul"
+    }
+  ],
+  "cheques": [
+    {
+      "id": 1,
+      "cliente": "Gustavo Dias",
+      "nomebanco": "Banco do Brasil",
+      "numerocheque": "123456",
+      "datacheque": "2025-08-20",
+      "situacao": "Em aberto",
+      "valor": 1500.00,
+      "juros": 2.5
+    },
+    {
+      "id": 2,
+      "cliente": "Vinicius de Moraes",
+      "nomebanco": "Caixa Econômica",
+      "numerocheque": "654321",
+      "datacheque": "2025-09-05",
+      "situacao": "Compensado",
+      "valor": 820.50,
+      "juros": 0.0
+    },
+    {
+      "id": 3,
+      "cliente": "Tiago Bittencourt",
+      "nomebanco": "Itaú",
+      "numerocheque": "987654",
+      "datacheque": "2025-08-25",
+      "situacao": "Em aberto",
+      "valor": 2300.75,
+      "juros": 1.8
+    },
+    {
+      "id": 4,
+      "cliente": "Caio Hobold",
+      "nomebanco": "Santander",
+      "numerocheque": "456789",
+      "datacheque": "2025-09-12",
+      "situacao": "Devolvido",
+      "valor": 640.00,
+      "juros": 3.2
+    },
+    {
+      "id": 5,
+      "cliente": "José Gabriel",
+      "nomebanco": "Bradesco",
+      "numerocheque": "321654",
+      "datacheque": "2025-08-18",
+      "situacao": "Em aberto",
+      "valor": 1200.00,
+      "juros": 2.0
     }
   ]
 }

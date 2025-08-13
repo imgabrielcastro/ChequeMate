@@ -20,8 +20,6 @@ export default function AddButton() {
             shadowOpacity: 1,
             shadowRadius: 10,
             elevation: 24,
-            flexDirection: "row",
-            marginLeft: "auto",
             position: "absolute",
             zIndex: 2,
             marginBottom: "15%",

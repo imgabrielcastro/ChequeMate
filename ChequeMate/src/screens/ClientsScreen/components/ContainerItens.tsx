@@ -18,7 +18,7 @@ export default function ContainerItens() {
           marginTop: -20, 
         }}
       >
-        <View style={{ alignItems: "center", paddingVertical: 16 }}>
+        <View style={{ alignItems: "center", paddingVertical: 12 }}>
           <SearchComponent />
         </View>
 

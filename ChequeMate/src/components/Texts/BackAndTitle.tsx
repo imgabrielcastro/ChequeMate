@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
 import { TouchableOpacity } from "react-native";
 
-export default function TittleWithIcon({
+export default function BackAndTitle({
   title,
   icon,
   navigation,

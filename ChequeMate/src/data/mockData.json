@@ -1,0 +1,84 @@
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "nome": "Gustavo Dias",
+      "idade": 28,
+      "sexo": "Masculino",
+      "telefone": "(47) 91234-5678",
+      "cidade": "Blumenau"
+    },
+    {
+      "id": 2,
+      "nome": "Vinicius de Moraes",
+      "idade": 35,
+      "sexo": "Masculino",
+      "telefone": "(48) 99876-5432",
+      "cidade": "Florianópolis"
+    },
+    {
+      "id": 3,
+      "nome": "Tiago Bittencourt",
+      "idade": 24,
+      "sexo": "Masculino",
+      "telefone": "(47) 98412-3456",
+      "cidade": "Joinville"
+    },
+    {
+      "id": 4,
+      "nome": "Caio Hobold",
+      "idade": 30,
+      "sexo": "Masculino",
+      "telefone": "(48) 99777-8888",
+      "cidade": "Criciúma"
+    },
+    {
+      "id": 5,
+      "nome": "José Gabriel",
+      "idade": 26,
+      "sexo": "Masculino",
+      "telefone": "(47) 99654-3210",
+      "cidade": "Itajaí"
+    },
+    {
+      "id": 6,
+      "nome": "Vitor Freitas",
+      "idade": 32,
+      "sexo": "Masculino",
+      "telefone": "(48) 99111-2233",
+      "cidade": "Chapecó"
+    },
+    {
+      "id": 7,
+      "nome": "João Wirth",
+      "idade": 29,
+      "sexo": "Masculino",
+      "telefone": "(47) 98888-9999",
+      "cidade": "Balneário Camboriú"
+    },
+    {
+      "id": 8,
+      "nome": "João Alves",
+      "idade": 41,
+      "sexo": "Masculino",
+      "telefone": "(48) 98765-4321",
+      "cidade": "Tubarão"
+    },
+    {
+      "id": 9,
+      "nome": "Saymon Espíndola",
+      "idade": 27,
+      "sexo": "Masculino",
+      "telefone": "(47) 97777-6666",
+      "cidade": "Jaraguá do Sul"
+    },
+    {
+      "id": 10,
+      "nome": "Mariana Fernandes",
+      "idade": 25,
+      "sexo": "Feminino",
+      "telefone": "(48) 95555-4444",
+      "cidade": "Palhoça"
+    }
+  ]
+}

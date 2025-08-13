@@ -1,8 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../screens/HomeScreen";
 import { theme } from "../../src/themes/theme";
-import { TouchableOpacity, Platform } from "react-native";
+import { TouchableOpacity } from "react-native";
 import type { BottomTabBarButtonProps } from "@react-navigation/bottom-tabs";
+import ClientsScreen from "../screens/ClientsScreen";
 
 export type AppTabsParamList = {
   Início: undefined;
@@ -17,7 +18,8 @@ const CustomTabBarButton = (props: BottomTabBarButtonProps) => {
     <TouchableOpacity
       activeOpacity={1}
       onPress={props.onPress}
-      style={props.style}>
+      style={props.style}
+    >
       {props.children}
     </TouchableOpacity>
   );
@@ -53,7 +55,7 @@ export function AppTabs() {
       />
       <Tab.Screen
         name="Clientes"
-        component={HomeScreen}
+        component={ClientsScreen}
         options={{
           tabBarLabel: "Clientes",
           tabBarIcon: () => null,

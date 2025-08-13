@@ -1,5 +1,4 @@
 import { Text } from "react-native-paper";
-import { theme } from "../themes/theme";
 import { View } from "react-native";
 
 export default function TextTitle({
@@ -15,3 +14,4 @@ export default function TextTitle({
         </View>
     );
 }
+    

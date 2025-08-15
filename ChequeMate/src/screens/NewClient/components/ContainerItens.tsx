@@ -6,6 +6,8 @@ import TopTitleInput from "../../../components/Inputs/TopTitleInput";
 import { useState } from "react";
 import { ScrollView } from "react-native-gesture-handler";
 import ButtonSave from "../../../components/Buttons/ButtonSave";
+import { KeyboardAvoidingView } from "react-native";
+import { Platform } from "react-native";
 
 export default function ContainerItens() {
   const [name, setName] = useState("");
@@ -24,59 +26,68 @@ export default function ContainerItens() {
   const [dataNascError, setDataNascError] = useState("");
 
   return (
-    <View style={{ backgroundColor: theme.colors.background }}>
-      <VStack
-        style={{
-          backgroundColor: theme.colors.secondary,
-          width: "auto",
-          height: "100%",
-          borderTopLeftRadius: 30,
-          borderTopRightRadius: 30,
-        }}
-      >
-        <ScrollView style={{ height: "auto" }}>
-          <View style={{ alignItems: "center", paddingVertical: 16 }}>
-            <TextTitle title="Informações" color={theme.colors.primary} />
+    <KeyboardAvoidingView
+      style={{ backgroundColor: theme.colors.background }}
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      keyboardVerticalOffset={0}
+    >
+      <View style={{ backgroundColor: theme.colors.background }}>
+        <VStack
+          style={{
+            backgroundColor: theme.colors.secondary,
+            width: "auto",
+            height: "100%",
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+          }}
+        >
+          <View style={{ height: "auto" }}>
+            <View style={{ alignItems: "center" }}>
+              <TextTitle title="Informações" color={theme.colors.primary} />
+            </View>
+
+          <View style={{ padding: 12 }}>
+            <TopTitleInput
+              value={name}
+              setValue={setName}
+              title="Nome:"
+              error={nameError}
+            />
+
+            <TopTitleInput
+              value={phone}
+              setValue={setPhone}
+              title="Telefone:"
+              error={phoneError}
+            />
+
+            <TopTitleInput
+              value={mail}
+              setValue={setMail}
+              title="E-mail:"
+              error={mailError}
+            />
+
+            <TopTitleInput
+              value={Cidade}
+              setValue={setCidade}
+              title="Cidade:"
+              error={CidadeError}
+            />
+
+            <TopTitleInput
+              value={dataNasc}
+              setValue={setDataNasc}
+              title="Data de nascimento:"
+              error={dataNascError}
+            />
+            </View>
+            
+
+            <ButtonSave value="Salvar" />
           </View>
-
-          <TopTitleInput
-            value={name}
-            setValue={setName}
-            title="Nome:"
-            error={nameError}
-          />
-
-          <TopTitleInput
-            value={phone}
-            setValue={setPhone}
-            title="Telefone:"
-            error={phoneError}
-          />
-
-          <TopTitleInput
-            value={mail}
-            setValue={setMail}
-            title="E-mail:"
-            error={mailError}
-          />
-
-          <TopTitleInput
-            value={Cidade}
-            setValue={setCidade}
-            title="Cidade:"
-            error={CidadeError}
-          />
-
-          <TopTitleInput
-            value={dataNasc}
-            setValue={setDataNasc}
-            title="Data de nascimento:"
-            error={dataNascError}
-          />
-
-          <ButtonSave value="Salvar" />
-        </ScrollView>
-      </VStack>
-    </View>
+        </VStack>
+      </View>
+    </KeyboardAvoidingView>
   );
 }

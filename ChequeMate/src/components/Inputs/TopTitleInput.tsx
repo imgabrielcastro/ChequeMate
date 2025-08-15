@@ -21,7 +21,7 @@ export default function TopTitleInput({
       <TextInput
         value={value}
         onChangeText={(text: string) => setValue(text)}
-        style={{ backgroundColor: theme.colors.input, height: 45 }}
+        style={{ backgroundColor: theme.colors.input, height: 38 }}
         mode="outlined"
         theme={{
           colors: {

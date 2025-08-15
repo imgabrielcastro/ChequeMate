@@ -8,6 +8,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import ButtonSave from "../../../components/Buttons/ButtonSave";
 import { KeyboardAvoidingView } from "react-native";
 import { Platform } from "react-native";
+import PhoneInput from "./PhoneInput";
 
 export default function ContainerItens() {
   const [name, setName] = useState("");
@@ -31,7 +32,7 @@ export default function ContainerItens() {
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={0}
     >
-      <View style={{ backgroundColor: theme.colors.background }}>
+      <ScrollView style={{ backgroundColor: theme.colors.background }}>
         <VStack
           style={{
             backgroundColor: theme.colors.secondary,
@@ -41,7 +42,7 @@ export default function ContainerItens() {
             borderTopRightRadius: 30,
           }}
         >
-          <View style={{ height: "auto" }}>
+          <View style={{ paddingVertical: 32 }}>
             <View style={{ alignItems: "center" }}>
               <TextTitle title="Informações" color={theme.colors.primary} />
             </View>
@@ -81,13 +82,20 @@ export default function ContainerItens() {
               title="Data de nascimento:"
               error={dataNascError}
             />
+
+            <PhoneInput
+              value={phone}
+              onChangeText={setPhone}
+              keyboardType="phone-pad"
+              maxLength={15}
+              error={phoneError}
+            />
             </View>
             
-
             <ButtonSave value="Salvar" />
           </View>
         </VStack>
-      </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }

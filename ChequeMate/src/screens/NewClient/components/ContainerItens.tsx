@@ -30,9 +30,9 @@ export default function ContainerItens() {
     <KeyboardAvoidingView
       style={{ backgroundColor: theme.colors.background }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={0}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 140 : 0}
     >
-      <ScrollView style={{ backgroundColor: theme.colors.background }}>
+      <ScrollView style={{ backgroundColor: theme.colors.background}}>
         <VStack
           style={{
             backgroundColor: theme.colors.secondary,
@@ -47,7 +47,7 @@ export default function ContainerItens() {
               <TextTitle title="Informações" color={theme.colors.primary} />
             </View>
 
-          <View style={{ padding: 12 }}>
+          <View style={{ paddingHorizontal: 8, paddingVertical: 6, gap: 8 }}>
             <TopTitleInput
               value={name}
               setValue={setName}
@@ -82,12 +82,10 @@ export default function ContainerItens() {
               title="Data de nascimento:"
               error={dataNascError}
             />
-
-            <PhoneInput
+            <PhoneInput 
               value={phone}
-              onChangeText={setPhone}
-              keyboardType="phone-pad"
-              maxLength={15}
+              setValue={setPhone}
+              title="Telefone"
               error={phoneError}
             />
             </View>

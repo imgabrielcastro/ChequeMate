@@ -15,7 +15,7 @@ export default function TopTitleInput({
   error?: string;
 }) {
   return (
-    <VStack style={{ padding: 20, borderRadius: 12, gap: 4 }}>
+    <VStack style={{ padding: 12, borderRadius: 12, gap: 2 }}>
         <Text variant="titleMedium" style={{ color: theme.colors.text }}>{title}</Text>
         
       <TextInput

@@ -145,6 +145,7 @@ export default function ContainerItens() {
                     bottom: -20,
                     left: 0,
                     right: 0,
+                    zIndex: 1,
                     backgroundColor: theme.colors.input,
                     padding: 20,
                     borderTopLeftRadius: 25,
@@ -154,8 +155,6 @@ export default function ContainerItens() {
                     shadowOffset: { width: 0, height: -2 },
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84,
-                    zIndex: 30,
-                    paddingBottom: 50,
                   }}
                   pointerEvents="auto"
                 >
@@ -165,7 +164,7 @@ export default function ContainerItens() {
                     display="spinner"
                     onChange={onChangeDate}
                     locale="pt-BR"
-                    textColor={theme.colors.text} 
+                    textColor={theme.colors.text}
                     themeVariant="dark"
                   />
                   <TouchableOpacity

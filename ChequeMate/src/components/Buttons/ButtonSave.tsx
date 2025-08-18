@@ -7,24 +7,35 @@ import HStack from "../Stacks/HStack";
 import { View } from "react-native";
 
 export default function ButtonSave({ value }: { value: string }) {
-    return (
-        <View style={{ width: '100%', alignItems: 'flex-end', paddingVertical: 20, paddingHorizontal: 22 }}>
-            <TouchableOpacity 
-                style={{ 
-                    backgroundColor: theme.colors.input, 
-                    borderRadius: 12, 
-                    alignItems: "center", 
-                    width: '35%',
-                    paddingVertical: 16
-                }}
-            >
-                <HStack style={{ flexDirection: "row", alignItems: 'center', gap: 8 }}>
-                    <FontAwesomeIcon icon={faSave} size={24} color={theme.colors.primary} />
-                    <Text variant="titleMedium" style={{ color: theme.colors.primary }}>
-                        {value}
-                    </Text>
-                </HStack>
-            </TouchableOpacity>
-        </View>
-    )
+  return (
+    <View
+      style={{
+        width: "100%",
+        alignItems: "flex-end",
+        paddingVertical: 20,
+        paddingHorizontal: 22,
+      }}
+    >
+      <TouchableOpacity
+        style={{
+          backgroundColor: theme.colors.input,
+          borderRadius: 12,
+          alignItems: "center",
+          width: "45%",
+          paddingVertical: 16,
+        }}
+      >
+        <HStack style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+          <FontAwesomeIcon
+            icon={faSave}
+            size={24}
+            color={theme.colors.primary}
+          />
+          <Text variant="titleMedium" style={{ color: theme.colors.primary }}>
+            {value}
+          </Text>
+        </HStack>
+      </TouchableOpacity>
+    </View>
+  );
 }

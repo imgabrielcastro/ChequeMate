@@ -1,6 +1,5 @@
 import { Text } from "react-native-paper";
 import { theme } from "../../themes/theme";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import HStack from "../Stacks/HStack";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";

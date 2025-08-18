@@ -1,14 +1,19 @@
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
-import { View } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
 import TextTitle from "../../../components/Texts/TextTitle";
 import TopTitleInput from "../../../components/Inputs/TopTitleInput";
 import { useState } from "react";
-import { ScrollView } from "react-native-gesture-handler";
 import ButtonSave from "../../../components/Buttons/ButtonSave";
-import { KeyboardAvoidingView } from "react-native";
-import { Platform } from "react-native";
 import PhoneInput from "./PhoneInput";
+import DataPicker from "./DataPicker";
+import { TouchableOpacity } from "react-native";
+import { Keyboard } from "react-native";
+import { TouchableWithoutFeedback } from "react-native";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { Text } from "react-native-paper";
+import { Alert } from "react-native";
+import * as Animatable from "react-native-animatable";
 
 export default function ContainerItens() {
   const [name, setName] = useState("");
@@ -26,28 +31,68 @@ export default function ContainerItens() {
   const [dataNasc, setDataNasc] = useState("");
   const [dataNascError, setDataNascError] = useState("");
 
+  const [date, setDate] = useState(new Date());
+  const [tempDate, setTempDate] = useState(new Date());
+
+  const [dateModalVisible, setDateModalVisible] = useState(false);
+
+  const showDatepicker = () => {
+    Keyboard.dismiss();
+    setTimeout(() => {
+      setDateModalVisible(true);
+    }, 100);
+  };
+
+  const hideDatepicker = () => {
+    setDateModalVisible(false);
+    setTimeout(() => {}, 100);
+  };
+
+  const onChangeDate = (event: any, selectedDate: any) => {
+    const currentDate = selectedDate || tempDate;
+    setTempDate(currentDate);
+  };
+
+  const handleConfirmDate = () => {
+    if (tempDate > new Date()) {
+      Alert.alert(
+        "Erro",
+        "A data de nascimento não pode ser maior que a data atual."
+      );
+      setTempDate(new Date());
+      setDataNasc("");
+      setDateModalVisible(false);
+      return;
+    }
+
+    setDate(tempDate);
+    setDataNasc(tempDate.toLocaleDateString("pt-BR"));
+    setDateModalVisible(false);
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ backgroundColor: theme.colors.background }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
-      keyboardVerticalOffset={Platform.OS === 'ios' ? 140 : 0}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 140 : 0}
     >
-      <ScrollView style={{ backgroundColor: theme.colors.background}}>
-        <VStack
-          style={{
-            backgroundColor: theme.colors.secondary,
-            width: "auto",
-            height: "100%",
-            borderTopLeftRadius: 30,
-            borderTopRightRadius: 30,
-          }}
-        >
-          <View style={{ paddingVertical: 32 }}>
-            <View style={{ alignItems: "center" }}>
-              <TextTitle title="Informações" color={theme.colors.primary} />
-            </View>
+      <ScrollView
+        contentContainerStyle={{
+          height: "100%",
+          flexGrow: 1,
+          backgroundColor: theme.colors.secondary,
+          borderTopLeftRadius: 30,
+          borderTopRightRadius: 30,
+        }}
+        keyboardShouldPersistTaps="handled"
+        scrollEnabled={!dateModalVisible}
+      >
+        <View style={{ padding: 16, paddingBottom: 50 }}>
+          <View style={{ alignItems: "center", marginBottom: 32 }}>
+            <TextTitle title="Informações" color={theme.colors.primary} />
+          </View>
 
-          <View style={{ paddingHorizontal: 8, paddingVertical: 6, gap: 8 }}>
+          <VStack style={{ gap: 16 }}>
             <TopTitleInput
               value={name}
               setValue={setName}
@@ -55,10 +100,10 @@ export default function ContainerItens() {
               error={nameError}
             />
 
-            <TopTitleInput
+            <PhoneInput
               value={phone}
               setValue={setPhone}
-              title="Telefone:"
+              title="Telefone"
               error={phoneError}
             />
 
@@ -76,23 +121,84 @@ export default function ContainerItens() {
               error={CidadeError}
             />
 
-            <TopTitleInput
-              value={dataNasc}
-              setValue={setDataNasc}
-              title="Data de nascimento:"
-              error={dataNascError}
-            />
-            <PhoneInput 
-              value={phone}
-              setValue={setPhone}
-              title="Telefone"
-              error={phoneError}
-            />
-            </View>
-            
+            <TouchableOpacity
+              onPress={showDatepicker}
+              disabled={dateModalVisible}
+            >
+              <DataPicker
+                value={dataNasc}
+                onChangeText={setDataNasc}
+                title="Data de nascimento:"
+                error={dataNascError}
+                editable={false}
+                pointerEvents="none"
+              />
+            </TouchableOpacity>
+
+            {dateModalVisible && (
+              <TouchableWithoutFeedback onPress={() => {}}>
+                <Animatable.View
+                  animation="fadeInUp"
+                  style={{
+                    gap: 12,
+                    position: "absolute",
+                    bottom: -20,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: theme.colors.input,
+                    padding: 20,
+                    borderTopLeftRadius: 25,
+                    borderTopRightRadius: 25,
+                    elevation: 5,
+                    shadowColor: "#000",
+                    shadowOffset: { width: 0, height: -2 },
+                    shadowOpacity: 0.25,
+                    shadowRadius: 3.84,
+                    zIndex: 30,
+                    paddingBottom: 50,
+                  }}
+                  pointerEvents="auto"
+                >
+                  <DateTimePicker
+                    value={tempDate}
+                    mode="date"
+                    display="spinner"
+                    onChange={onChangeDate}
+                    locale="pt-BR"
+                    textColor={theme.colors.text} 
+                    themeVariant="dark"
+                  />
+                  <TouchableOpacity
+                    style={{
+                      padding: 0,
+                      borderRadius: 5,
+                      alignItems: "center",
+                      marginTop: 10,
+                      paddingVertical: 10,
+                      backgroundColor: theme.colors.primary,
+                    }}
+                    onPress={handleConfirmDate}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        color: "#fff",
+                        fontWeight: "bold",
+                        padding: 8,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      Confirmar
+                    </Text>
+                  </TouchableOpacity>
+                </Animatable.View>
+              </TouchableWithoutFeedback>
+            )}
+
             <ButtonSave value="Salvar" />
-          </View>
-        </VStack>
+          </VStack>
+        </View>
       </ScrollView>
     </KeyboardAvoidingView>
   );

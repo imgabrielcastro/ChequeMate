@@ -15,7 +15,7 @@ export default function NewClient({ navigation }: { navigation: any }) {
           />
         </VStack>
         <VStack style={{marginBottom: 180}}>
-        <ContainerItens />
+        <ContainerItens onSubmit={(email: string) => console.log(email)} navigation={navigation} />
         </VStack>
       </VStack>
     );

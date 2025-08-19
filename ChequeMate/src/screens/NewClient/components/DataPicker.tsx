@@ -22,7 +22,7 @@ export default function DataPicker({
   pointerEvents?: string;
 }) {
   return (
-    <VStack style={{ padding: 12, borderRadius: 12, gap: 2 }}>
+    <VStack style={{ padding: 12, borderRadius: 12, flex: 1, marginBottom: -12, zIndex: 20 }}>
       <Text variant="titleMedium" style={{ color: theme.colors.text }}>{title}</Text>
       
       <View style={styles.inputContainer}>

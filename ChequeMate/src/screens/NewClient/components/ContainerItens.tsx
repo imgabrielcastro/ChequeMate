@@ -9,18 +9,24 @@ import PhoneInput from "./PhoneInput";
 import DataPicker from "./DataPicker";
 import { TouchableOpacity } from "react-native";
 import { Keyboard } from "react-native";
-import { TouchableWithoutFeedback } from "react-native";
+import { TouchableWithoutFeedback, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "react-native-paper";
 import { Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useEmailField } from "../../../hooks/useEmailField";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import CitySelector from "./ModalCity";
+import { City } from "./ModalCity";
+import api from "../../../services/api";
+import { useNavigation } from "@react-navigation/native";
 
 interface ContainerItensProps {
   onSubmit: (email: string) => void;
+  navigation: any;
 }
 
-export default function ContainerItens({ onSubmit }: ContainerItensProps) {
+export default function ContainerItens({ onSubmit, navigation }: ContainerItensProps) {
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
 
@@ -41,9 +47,11 @@ export default function ContainerItens({ onSubmit }: ContainerItensProps) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
 
-  // Mostrar erro apenas quando houver tentativa de submit ou quando houver erro durante a digitação
-  const showError = (submitAttempted && !email.trim()) || (submitAttempted && error) || error;
-  const errorMessage = error || 'Informe seu e-mail';
+  const [selectedCity, setSelectedCity] = useState<City | null>(null);
+
+  const showError =
+    (submitAttempted && !email.trim()) || (submitAttempted && error) || error;
+  const errorMessage = error || "Informe seu e-mail";
 
   const showDatepicker = () => {
     Keyboard.dismiss();
@@ -83,7 +91,14 @@ export default function ContainerItens({ onSubmit }: ContainerItensProps) {
     setSubmitAttempted(true);
     if (email.trim() && !error) {
       onSubmit(email);
+      navigation.navigate('AppTabs', {
+        screen: 'Clientes',
+      });
     }
+  };
+
+  const closeModalIfClickedOutside = () => {
+    if (dateModalVisible) setDateModalVisible(false);
   };
 
   return (
@@ -130,17 +145,27 @@ export default function ContainerItens({ onSubmit }: ContainerItensProps) {
             />
 
             {showError && (
-              <Text style={{ color: 'red', marginTop: -32, marginBottom: 4, fontSize: 14, padding: 12 }}>
+              <Text
+                style={{
+                  color: "red",
+                  marginTop: -32,
+                  marginBottom: -24,
+                  fontSize: 14,
+                  padding: 12,
+                }}
+              >
                 {errorMessage}
               </Text>
             )}
 
-            <TopTitleInput
-              value={Cidade}
-              setValue={setCidade}
-              title="Cidade:"
-              error={CidadeError}
-            />
+            <GestureHandlerRootView style={{ flex: 1 }}>
+              <View>
+                <CitySelector
+                  selectedCity={selectedCity}
+                  onSelectCity={(city) => setSelectedCity(city)}
+                />
+              </View>
+            </GestureHandlerRootView>
 
             <TouchableOpacity
               onPress={showDatepicker}
@@ -157,16 +182,28 @@ export default function ContainerItens({ onSubmit }: ContainerItensProps) {
             </TouchableOpacity>
 
             {dateModalVisible && (
-              <TouchableWithoutFeedback onPress={() => {}}>
+              <View
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  zIndex: 1,
+                }}
+                pointerEvents="box-none"
+              >
+                <TouchableWithoutFeedback onPress={hideDatepicker}>
+                  <View style={StyleSheet.absoluteFill} />
+                </TouchableWithoutFeedback>
                 <Animatable.View
                   animation="fadeInUp"
                   style={{
                     gap: 12,
                     position: "absolute",
-                    bottom: -20,
+                    bottom: 0,
                     left: 0,
                     right: 0,
-                    zIndex: 1,
                     backgroundColor: theme.colors.input,
                     padding: 20,
                     borderTopLeftRadius: 25,
@@ -177,7 +214,7 @@ export default function ContainerItens({ onSubmit }: ContainerItensProps) {
                     shadowOpacity: 0.25,
                     shadowRadius: 3.84,
                   }}
-                  pointerEvents="auto"
+                  pointerEvents="box-none"
                 >
                   <DateTimePicker
                     value={tempDate}
@@ -213,10 +250,10 @@ export default function ContainerItens({ onSubmit }: ContainerItensProps) {
                     </Text>
                   </TouchableOpacity>
                 </Animatable.View>
-              </TouchableWithoutFeedback>
+              </View>
             )}
 
-            <ButtonSave value="Salvar" onPress={handleSubmit}/>
+            <ButtonSave value="Salvar" onPress={handleSubmit} />
           </VStack>
         </View>
       </ScrollView>

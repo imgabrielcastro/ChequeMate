@@ -30,6 +30,7 @@ export default function TopTitleInput({
         }}
         style={{ backgroundColor: theme.colors.input, height: 38 }}
         mode="outlined"
+        keyboardAppearance="dark"
         theme={{
           colors: {
             primary: theme.colors.input,

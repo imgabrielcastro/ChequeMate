@@ -8,11 +8,13 @@ export default function TopTitleInput({
   setValue,
   title,
   error,
+  onChange,
 }: {
   value: string;
   setValue: (value: string) => void;
   title: string;
   error?: string;
+  onChange?: (value: string) => void;
 }) {
   return (
     <VStack style={{ padding: 12, borderRadius: 12, gap: 2 }}>
@@ -20,7 +22,12 @@ export default function TopTitleInput({
         
       <TextInput
         value={value}
-        onChangeText={(text: string) => setValue(text)}
+        onChangeText={(text: string) => {
+          setValue(text);
+          if (onChange) {
+            onChange(text);
+          }
+        }}
         style={{ backgroundColor: theme.colors.input, height: 38 }}
         mode="outlined"
         theme={{

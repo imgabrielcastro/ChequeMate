@@ -36,6 +36,7 @@ export default function PhoneInput({
             value={value}
             onChangeText={setValue}
             keyboardType="phone-pad"
+            keyboardAppearance="dark"
             style={{
               color: theme.colors.text,
               flex: 1,

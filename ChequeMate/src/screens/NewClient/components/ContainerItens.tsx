@@ -14,16 +14,20 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "react-native-paper";
 import { Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
+import { useEmailField } from "../../../hooks/useEmailField";
 
-export default function ContainerItens() {
+interface ContainerItensProps {
+  onSubmit: (email: string) => void;
+}
+
+export default function ContainerItens({ onSubmit }: ContainerItensProps) {
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
 
   const [phone, setPhone] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
-  const [mail, setMail] = useState("");
-  const [mailError, setMailError] = useState("");
+  const { email, error, onChange: onEmailChange } = useEmailField();
 
   const [Cidade, setCidade] = useState("");
   const [CidadeError, setCidadeError] = useState("");
@@ -35,6 +39,11 @@ export default function ContainerItens() {
   const [tempDate, setTempDate] = useState(new Date());
 
   const [dateModalVisible, setDateModalVisible] = useState(false);
+  const [submitAttempted, setSubmitAttempted] = useState(false);
+
+  // Mostrar erro apenas quando houver tentativa de submit ou quando houver erro durante a digitação
+  const showError = (submitAttempted && !email.trim()) || (submitAttempted && error) || error;
+  const errorMessage = error || 'Informe seu e-mail';
 
   const showDatepicker = () => {
     Keyboard.dismiss();
@@ -70,6 +79,13 @@ export default function ContainerItens() {
     setDateModalVisible(false);
   };
 
+  const handleSubmit = () => {
+    setSubmitAttempted(true);
+    if (email.trim() && !error) {
+      onSubmit(email);
+    }
+  };
+
   return (
     <KeyboardAvoidingView
       style={{ backgroundColor: theme.colors.background }}
@@ -78,7 +94,6 @@ export default function ContainerItens() {
     >
       <ScrollView
         contentContainerStyle={{
-          height: "100%",
           flexGrow: 1,
           backgroundColor: theme.colors.secondary,
           borderTopLeftRadius: 30,
@@ -108,11 +123,17 @@ export default function ContainerItens() {
             />
 
             <TopTitleInput
-              value={mail}
-              setValue={setMail}
+              value={email}
+              setValue={onEmailChange}
               title="E-mail:"
-              error={mailError}
+              error={showError ? errorMessage : undefined}
             />
+
+            {showError && (
+              <Text style={{ color: 'red', marginTop: -32, marginBottom: 4, fontSize: 14, padding: 12 }}>
+                {errorMessage}
+              </Text>
+            )}
 
             <TopTitleInput
               value={Cidade}
@@ -195,7 +216,7 @@ export default function ContainerItens() {
               </TouchableWithoutFeedback>
             )}
 
-            <ButtonSave value="Salvar" />
+            <ButtonSave value="Salvar" onPress={handleSubmit}/>
           </VStack>
         </View>
       </ScrollView>

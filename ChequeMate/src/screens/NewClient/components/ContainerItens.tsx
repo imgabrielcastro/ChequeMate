@@ -26,7 +26,10 @@ interface ContainerItensProps {
   navigation: any;
 }
 
-export default function ContainerItens({ onSubmit, navigation }: ContainerItensProps) {
+export default function ContainerItens({
+  onSubmit,
+  navigation,
+}: ContainerItensProps) {
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
 
@@ -91,8 +94,8 @@ export default function ContainerItens({ onSubmit, navigation }: ContainerItensP
     setSubmitAttempted(true);
     if (email.trim() && !error) {
       onSubmit(email);
-      navigation.navigate('AppTabs', {
-        screen: 'Clientes',
+      navigation.navigate("AppTabs", {
+        screen: "Clientes",
       });
     }
   };

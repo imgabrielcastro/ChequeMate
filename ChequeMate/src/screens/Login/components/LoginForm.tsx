@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { faEnvelope } from "@fortawesome/free-regular-svg-icons";
@@ -16,18 +16,18 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ onInputFocus, onSubmit }: LoginFormProps) {
-  const [checked, setChecked] = useState(false);
-  const [submitAttempted, setSubmitAttempted] = useState(false);
-  const { email, error, onChange } = useEmailField();
+  const [checked, setChecked] = React.useState(false);
+  const { email, error, onChange, handleSubmit } = useEmailField();
 
-  const handleSubmit = () => {
-    setSubmitAttempted(true);
-    if (email.trim() && !error) {
-      onSubmit(email);
-    }
+  const onFormSubmit = (formData: { email: string }) => {
+    onSubmit(formData.email);
   };
 
-  const showError = (submitAttempted && !email.trim()) || (submitAttempted && error);
+  const handleFormSubmit = () => {
+    handleSubmit(onFormSubmit)();
+  };
+
+  const showError = !!error;
   const errorMessage = error || 'Informe seu e-mail';
 
   return (
@@ -85,7 +85,7 @@ export default function LoginForm({ onInputFocus, onSubmit }: LoginFormProps) {
           </TouchableOpacity>
         </View>
 
-        <ButtonConfirm onPress={handleSubmit} />
+        <ButtonConfirm onPress={handleFormSubmit} />
       </VStack>
     </Animatable.View>
   );

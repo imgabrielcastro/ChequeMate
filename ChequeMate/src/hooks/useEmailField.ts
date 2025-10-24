@@ -1,22 +1,31 @@
-import { useState } from 'react';
-import { isValidEmail } from '../utils/validators';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { emailSchema, EmailFormData } from '../schemas/validationSchemas';
 
 export function useEmailField() {
-  const [email, setEmail] = useState('');
-  const [error, setError] = useState('');
+  const {
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<EmailFormData>({
+    resolver: yupResolver(emailSchema),
+    mode: 'onChange',
+  });
+
+  const email = watch('email') || '';
+  const error = errors.email?.message;
 
   const onChange = (value: string) => {
-    setEmail(value);
-    if (!isValidEmail(value)) {
-      setError('Insira um e-mail válido');
-    } else {
-      setError('');
-    }
+    setValue('email', value, { shouldValidate: true });
   };
 
   return {
     email,
     error,
     onChange,
+    handleSubmit,
+    register,
   };
 }

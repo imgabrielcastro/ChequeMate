@@ -10,6 +10,7 @@ import VStack from "../../../components/Stacks/VStack";
 import InputWithIcon from "../../../components/Inputs/InputWithIcon";
 import ButtonConfirm from "./ButtonConfirm";
 import { usePasswordField } from "../../../hooks/usePasswordField";
+import { PasswordFormData } from "../../../schemas/validationSchemas";
 
 interface PasswordFormProps {
   onInputFocus: () => void;
@@ -25,18 +26,26 @@ export default function PasswordForm({
   email,
 }: PasswordFormProps) {
   const [showPassword, setShowPassword] = useState(false);
-  const [submitAttempted, setSubmitAttempted] = useState(false);
-  const { password, error, onChange, setError } = usePasswordField();
+  const { password, error, onChange, handleSubmit } = usePasswordField();
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   
-  const handleSubmit = () => {
-    setSubmitAttempted(true);
-    if (!password.trim()) {
-      setError('Informe sua senha');
-      return;
-    }
+  const onFormSubmit = (formData: PasswordFormData) => {
+    // Aqui você pode fazer a validação da senha com a API
+    console.log('Senha submetida:', formData.password);
     onSubmit();
+  };
+
+  const handleFormSubmit = () => {
+    handleSubmit(onFormSubmit)();
+  };
+
+  const handlePasswordChange = (value: string) => {
+    onChange(value);
+  };
+
+  const handleInputFocus = () => {
+    onInputFocus();
   };
 
   return (
@@ -95,24 +104,26 @@ export default function PasswordForm({
         <InputWithIcon
           icon={faLock}
           placeholder="Informe sua Senha"
-          onChangeText={onChange}
+          onChangeText={handlePasswordChange}
           value={password}
-          onFocus={onInputFocus}
+          onFocus={handleInputFocus}
           secureTextEntry={!showPassword}
-          error={submitAttempted ? error : undefined}
+          error={error ? error : undefined}
           rightIcon={{
             icon: showPassword ? faEyeSlash : faEye,
             onPress: togglePasswordVisibility
           }}
+          autoCapitalize="none"
+          autoCorrect={false}
         />
         
-        {submitAttempted && error ? (
+        {error && (
           <Text style={{ color: 'red', marginTop: 4, fontSize: 14 }}>
             {error}
           </Text>
-        ) : null}
+        )}
 
-        <ButtonConfirm onPress={handleSubmit} />
+        <ButtonConfirm onPress={handleFormSubmit} />
       </VStack>
     </Animatable.View>
   );

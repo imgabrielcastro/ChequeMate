@@ -4,12 +4,13 @@ import { useTheme, Text, Card, Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../../themes/theme";
 import { getClientes } from "../../../services/clientService";
+import { TextInputMask } from 'react-native-masked-text';
 
 interface Usuario {
   id: number;
   nome: string;
-  sexo: string;
-  idade: number;
+  cpf_cnpj: string;
+  telefone: string;
 }
 
 export const ClientList = () => {
@@ -70,12 +71,21 @@ export const ClientList = () => {
               </Text>
 
               <View style={{ flexDirection: "row", gap: 8 }}>
-                <Text variant="bodyMedium" style={{ color: theme.colors.text }}>
-                  {item.idade} anos,
-                </Text>
-                <Text variant="bodyMedium" style={{ color: theme.colors.text }}>
-                  {item.sexo}
-                </Text>
+                <TextInputMask
+                  type={'cel-phone'}
+                  options={{
+                    maskType: 'BRL',
+                    withDDD: true,
+                    dddMask: '(99) ',
+                  }}
+                  value={item.telefone}
+                  style={{
+                    color: theme.colors.text,
+                    fontSize: 14,
+                    lineHeight: 20,
+                  }}
+                  editable={false}
+                />
               </View>
             </View>
           </View>

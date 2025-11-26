@@ -32,10 +32,10 @@ export default function SearchComponent() {
             paddingVertical: 0,
             marginVertical: 0,
             height: 48,
-            fontSize: 14, // Adicione um tamanho de fonte se necessário
+            fontSize: 14, 
           }}
           outlineStyle={{
-            borderWidth: 0, // Remove a borda se não for necessária
+            borderWidth: 0, 
           }}
           mode="outlined"
           theme={{
@@ -44,7 +44,7 @@ export default function SearchComponent() {
               text: theme.colors.text,
               onSurface: theme.colors.text,
             },
-            roundness: 12, // Ajusta o borderRadius do outline
+            roundness: 12, 
           }}
         />
       </View>

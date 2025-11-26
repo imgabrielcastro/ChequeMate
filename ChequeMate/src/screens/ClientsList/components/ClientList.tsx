@@ -1,9 +1,9 @@
-import React from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
 import { useTheme, Text, Card, Avatar } from "react-native-paper";
-import mockData from "../../../data/mockData.json";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../../themes/theme";
+import { getClientes } from "../../../services/clientService";
 
 interface Usuario {
   id: number;
@@ -16,62 +16,80 @@ export const ClientList = () => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
 
-  const usuarios = mockData?.usuarios || [];
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const renderItem = ({ item }: { item: Usuario }) => {
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getClientes();
+        setUsuarios(data);
+      } catch (err) {
+        console.log("Erro ao carregar clientes:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
+  if (loading) {
     return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate("PerfilCliente")}
-        style={{ marginBottom: 8 }}
-      >
-        <Card style={{ marginBottom: 8, borderRadius: 12, backgroundColor: theme.colors.input }}>
-          <Card.Content>
-            <View
-              style={{ flexDirection: "row", alignItems: "center", gap: 12 }}
-            >
-              <Avatar.Icon size={40} icon="account" color={theme.colors.primary} style={{ backgroundColor: theme.colors.background  }} />
-              <View style={{ flex: 1 }}>
-                <Text variant="titleMedium" style={{ fontWeight: "bold", marginBottom: 4, color: theme.colors.primary }}>
-                  {item?.nome || "Nome não disponível"}
-                </Text>
-                <View style={{ flexDirection: "row", gap: 8 }}>
-                  <Text
-                    variant="bodyMedium"
-                    style={{ color: theme.colors.text }}
-                  >
-                    {item?.idade ? `${item.idade} anos` : "Idade não informada"}
-                    ,
-                  </Text>
-                  <Text
-                    variant="bodyMedium"
-                    style={{ color: theme.colors.text }}
-                  >
-                    {item?.sexo || ""}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </Card.Content>
-        </Card>
-      </TouchableOpacity>
+      <View style={[styles.container]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+      </View>
     );
-  };
+  }
 
   if (!usuarios.length) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.primary }]}>
+      <View style={styles.container}>
         <Text variant="titleMedium">Nenhum usuário encontrado</Text>
       </View>
     );
   }
 
+  const renderItem = ({ item }: { item: Usuario }) => (
+    <TouchableOpacity
+      onPress={() => navigation.navigate("PerfilCliente")}
+      style={{ marginBottom: 8 }}
+    >
+      <Card style={{ marginBottom: 8, borderRadius: 12, backgroundColor: theme.colors.input }}>
+        <Card.Content>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
+            <Avatar.Icon
+              size={40}
+              icon="account"
+              color={theme.colors.primary}
+              style={{ backgroundColor: theme.colors.background }}
+            />
+            <View style={{ flex: 1 }}>
+              <Text variant="titleMedium" style={{ fontWeight: "bold", marginBottom: 4, color: theme.colors.primary }}>
+                {item.nome}
+              </Text>
+
+              <View style={{ flexDirection: "row", gap: 8 }}>
+                <Text variant="bodyMedium" style={{ color: theme.colors.text }}>
+                  {item.idade} anos,
+                </Text>
+                <Text variant="bodyMedium" style={{ color: theme.colors.text }}>
+                  {item.sexo}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </Card.Content>
+      </Card>
+    </TouchableOpacity>
+  );
+
   return (
     <FlatList
       data={usuarios}
       renderItem={renderItem}
-      keyExtractor={(item, index) => `user-${item?.id || index}`}
+      keyExtractor={(item) => `user-${item.id}`}
       contentContainerStyle={styles.listContainer}
-      style={{ flex: 1 }}
       showsVerticalScrollIndicator={false}
     />
   );
@@ -85,8 +103,5 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     paddingBottom: 20,
-  },
-  card: {
-
   },
 });

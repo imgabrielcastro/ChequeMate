@@ -18,7 +18,7 @@ import { useEmailField } from "../../../hooks/useEmailField";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CitySelector from "./ModalCity";
 import { City } from "./ModalCity";
-import api from "../../../services/api";
+import api from "../../../services/apiViaCep";
 import { useNavigation } from "@react-navigation/native";
 
 interface ContainerItensProps {

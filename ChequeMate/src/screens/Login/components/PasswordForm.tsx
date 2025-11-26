@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Text } from "react-native-paper";
 import { faLock, faEnvelope, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";  
 import * as Animatable from "react-native-animatable";
-
+import { useAuth } from "../../../context/AuthContext";
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
 import InputWithIcon from "../../../components/Inputs/InputWithIcon";
@@ -27,15 +27,19 @@ export default function PasswordForm({
 }: PasswordFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const { password, error, onChange, handleSubmit } = usePasswordField();
+  const { login } = useAuth();
 
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
   
-  const onFormSubmit = (formData: PasswordFormData) => {
-    // Aqui você pode fazer a validação da senha com a API
-    console.log('Senha submetida:', formData.password);
-    onSubmit();
+  const onFormSubmit = async (formData: PasswordFormData) => {
+    try {
+      await login(email, formData.password);
+      onSubmit();
+    } catch (err) {
+      console.log(err);
+      alert("Email ou senha inválidos");
+    }
   };
-
   const handleFormSubmit = () => {
     handleSubmit(onFormSubmit)();
   };

@@ -45,11 +45,16 @@ export const ChequeList = () => {
         return dataISO;
       }
     };
+
+ 
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("PerfilCliente")}
         style={{ marginBottom: 8 }}
       >
+        {loading && (
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+        )}
         <Card
           style={{
             marginBottom: 8,
@@ -120,7 +125,7 @@ export const ChequeList = () => {
       try {
         const data = await getCheques();
         setCheques(data);
-        console.log(data);
+        setLoading(false);
       } catch (err) {
         console.log("Erro ao carregar cheques:", err);
       }

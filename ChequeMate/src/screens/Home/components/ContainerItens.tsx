@@ -7,6 +7,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import ReciveInMonth from "./ReciveInMonth";
 import ReceivingAmounts from "./ReceivingAmounts";
 import HStack from "../../../components/Stacks/HStack";
+import { EReceivingStatus } from "../../../enums/EnumReceivingAmount";
 
 export default function ContainerItens() {
   return (
@@ -41,8 +42,8 @@ export default function ContainerItens() {
               gap: 12,
             }}
           >
-            <ReceivingAmounts text="Recebidos no mês:" value="600,00" />
-            <ReceivingAmounts text="Valores a receber:" value="1200,00" />
+            <ReceivingAmounts name="Recebidos no mês:" status={EReceivingStatus.RECEIVED} />
+            <ReceivingAmounts name="Valores a receber:" status={EReceivingStatus.PENDING} />
           </HStack>
 
           <Text
@@ -55,10 +56,7 @@ export default function ContainerItens() {
           <VStack
             style={{ backgroundColor: theme.colors.input, borderRadius: 10 }}
           >
-            <ReciveInMonth name="José Gabriel" value="100" />
-            <ReciveInMonth name="Vinicius de Moraes" value="200" />
-            <ReciveInMonth name="Maria da Silva" value="300" />
-            <ReciveInMonth name="Maria da Silva" value="300" />
+            <ReciveInMonth />
           </VStack>
         </ScrollView>
       </VStack>

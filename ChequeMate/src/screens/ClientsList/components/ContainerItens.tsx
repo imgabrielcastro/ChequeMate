@@ -1,12 +1,14 @@
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
-import { View } from "react-native";
+import { View, TextInput } from "react-native";
 import { ScrollView } from "react-native";
 import SearchComponent from "../../../components/Inputs/SearchComponent";
 import { ClientList } from "./ClientList";
 import AddButton from "../../../components/Buttons/AddButton";
+import { useState } from "react";
 
 export default function ContainerItens() {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <View style={{ backgroundColor: theme.colors.background }}>
       <VStack
@@ -20,11 +22,15 @@ export default function ContainerItens() {
         }}
       >
         <View style={{ paddingVertical: 12 }}>
-          <SearchComponent />
+          <SearchComponent 
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            placeholder="Buscar cliente..."
+          />
         </View>
 
         <View style={{ padding: 12, flex: 1 }}>
-          <ClientList />
+          <ClientList searchQuery={searchQuery} />
         </View>
         <View style={{ alignSelf: "flex-end", bottom: 10  }}>
             <AddButton page="NewClient" />

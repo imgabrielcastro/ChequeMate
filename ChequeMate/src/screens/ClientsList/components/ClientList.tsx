@@ -13,18 +13,37 @@ interface Usuario {
   telefone: string;
 }
 
-export const ClientList = () => {
+interface ClientListProps {
+  searchQuery?: string;
+}
+
+export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
 
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
+  const [filteredUsuarios, setFilteredUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (searchQuery) {
+      const filtered = usuarios.filter(
+        user => 
+          user.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          (user.telefone && user.telefone.includes(searchQuery))
+      );
+      setFilteredUsuarios(filtered);
+    } else {
+      setFilteredUsuarios(usuarios);
+    }
+  }, [searchQuery, usuarios]);
 
   useEffect(() => {
     async function fetchData() {
       try {
         const data = await getClientes();
         setUsuarios(data);
+        setFilteredUsuarios(data);
       } catch (err) {
         console.log("Erro ao carregar clientes:", err);
       } finally {
@@ -43,7 +62,7 @@ export const ClientList = () => {
     );
   }
 
-  if (!usuarios.length) {
+  if (!filteredUsuarios.length) {
     return (
       <View style={styles.container}>
         <Text variant="titleMedium">Nenhum usuário encontrado</Text>
@@ -96,7 +115,7 @@ export const ClientList = () => {
 
   return (
     <FlatList
-      data={usuarios}
+      data={filteredUsuarios}
       renderItem={renderItem}
       keyExtractor={(item) => `user-${item.id}`}
       contentContainerStyle={styles.listContainer}

@@ -1,28 +1,50 @@
-import React from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { useTheme, Text, Card, Avatar } from "react-native-paper";
-import mockData from "../../../data/mockData.json";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../../themes/theme";
+import { getCheques } from "../../../services/chequesService";
 
 interface Cheque {
   id: number;
-  cliente: string;
-  nomebanco: string;
-  numerocheque: string;
-  datacheque: string;
-  situacao: string;
-  valor: number;
-  juros: number;
+  cliente_nome: string;
+  numero_cheque: string;
+  data_cheque: string;
+  valor_original: number;
+  status: string;
+  vencimento: string;
 }
 
 export const ChequeList = () => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
 
-  const cheques = mockData?.cheques || [];
+  const [loading, setLoading] = useState(true);
+  const [cheques, setCheques] = useState<Cheque[]>([]);
 
   const renderItem = ({ item }: { item: Cheque }) => {
+    const formatarVencimento = (dataISO: string) => {
+      if (!dataISO) return "";
+
+      try {
+        const data = new Date(dataISO);
+
+        const dia = String(data.getDate()).padStart(2, "0");
+        const mes = String(data.getMonth() + 1).padStart(2, "0"); // Mês começa em 0
+        const ano = data.getFullYear();
+
+        return `${dia}/${mes}/${ano}`;
+      } catch (error) {
+        console.log("Erro ao formatar data:", error);
+        return dataISO;
+      }
+    };
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("PerfilCliente")}
@@ -54,13 +76,14 @@ export const ChequeList = () => {
                       color: theme.colors.primary,
                     }}
                   >
-                    {item?.cliente || "Nome não disponível"}
+                    {item?.cliente_nome || "Nome não disponível"}
                   </Text>
                   <Text
                     variant="titleMedium"
                     style={{ color: theme.colors.primary, fontWeight: "bold" }}
                   >
-                    R$ {item?.valor.toFixed(2) || ""}
+                    {/* R$ {item?.valor || ""} */}
+                    R$ {item?.valor_original || ""}
                   </Text>
                 </View>
                 <View
@@ -74,13 +97,14 @@ export const ChequeList = () => {
                     variant="titleMedium"
                     style={{ color: theme.colors.text }}
                   >
-                    {item?.datacheque.split("-").reverse().join("/") || ""}
+                    {/* {item?.datacheque.split("-").reverse().join("/") || ""} */}
+                    {formatarVencimento(item?.vencimento) || ""}
                   </Text>
                   <Text
                     variant="titleMedium"
                     style={{ color: theme.colors.text }}
                   >
-                    {item?.situacao || ""}
+                    {item?.status || ""}
                   </Text>
                 </View>
               </View>
@@ -90,6 +114,19 @@ export const ChequeList = () => {
       </TouchableOpacity>
     );
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getCheques();
+        setCheques(data);
+        console.log(data);
+      } catch (err) {
+        console.log("Erro ao carregar cheques:", err);
+      }
+    }
+    fetchData();
+  }, []);
 
   if (!cheques.length) {
     return (

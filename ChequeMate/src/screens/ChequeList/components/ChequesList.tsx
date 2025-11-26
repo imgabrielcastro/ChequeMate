@@ -104,7 +104,7 @@ export const ChequeList = () => {
                     variant="titleMedium"
                     style={{ color: theme.colors.text }}
                   >
-                    {item?.status || ""}
+                   {item?.status ? item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase() : ""}
                   </Text>
                 </View>
               </View>

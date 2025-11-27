@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity, ActivityIndicator } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from "react-native";
 import { useTheme, Text, Card, Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../../themes/theme";
@@ -20,10 +20,29 @@ interface ClientListProps {
 export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [filteredUsuarios, setFilteredUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const loadData = async () => {
+    try {
+      const data = await getClientes();
+      setUsuarios(data);
+      setFilteredUsuarios(data);
+    } catch (err) {
+      console.log("Erro ao carregar clientes:", err);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
+    }
+  };
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    loadData();
+  };
 
   useEffect(() => {
     if (searchQuery) {
@@ -39,22 +58,10 @@ export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
   }, [searchQuery, usuarios]);
 
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getClientes();
-        setUsuarios(data);
-        setFilteredUsuarios(data);
-      } catch (err) {
-        console.log("Erro ao carregar clientes:", err);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
+    loadData(); 
   }, []);
 
-  if (loading) {
+  if (loading && !isRefreshing) {
     return (
       <View style={[styles.container]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
@@ -115,6 +122,14 @@ export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
 
   return (
     <FlatList
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          colors={[theme.colors.primary]}
+          tintColor={theme.colors.primary}
+        />
+      }
       data={filteredUsuarios}
       renderItem={renderItem}
       keyExtractor={(item) => `user-${item.id}`}

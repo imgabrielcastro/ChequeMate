@@ -22,7 +22,7 @@ export default function ContainerItens() {
         }}
       >
         <View style={{ paddingVertical: 12 }}>
-          <SearchComponent 
+          <SearchComponent
             value={searchQuery}
             onChangeText={setSearchQuery}
             placeholder="Buscar cliente..."
@@ -32,9 +32,9 @@ export default function ContainerItens() {
         <View style={{ padding: 12, flex: 1 }}>
           <ClientList searchQuery={searchQuery} />
         </View>
-        <View style={{ alignSelf: "flex-end", bottom: 10  }}>
-            <AddButton page="NewClient" />
-          </View>
+        <View style={{ alignSelf: "flex-end", bottom: 10 }}>
+          <AddButton page="NewClient" />
+        </View>
       </VStack>
     </View>
   );

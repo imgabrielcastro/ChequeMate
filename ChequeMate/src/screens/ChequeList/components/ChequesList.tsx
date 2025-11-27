@@ -5,6 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
+  RefreshControl,
 } from "react-native";
 import { useTheme, Text, Card, Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
@@ -24,7 +25,7 @@ interface Cheque {
 export const ChequeList = () => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
-
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [cheques, setCheques] = useState<Cheque[]>([]);
 
@@ -36,7 +37,7 @@ export const ChequeList = () => {
         const data = new Date(dataISO);
 
         const dia = String(data.getDate()).padStart(2, "0");
-        const mes = String(data.getMonth() + 1).padStart(2, "0"); // Mês começa em 0
+        const mes = String(data.getMonth() + 1).padStart(2, "0");
         const ano = data.getFullYear();
 
         return `${dia}/${mes}/${ano}`;
@@ -46,15 +47,16 @@ export const ChequeList = () => {
       }
     };
 
- 
+    const handleRefresh = () => {
+      setIsRefreshing(true);
+      loadData();
+    };
+
     return (
       <TouchableOpacity
         onPress={() => navigation.navigate("PerfilCliente")}
         style={{ marginBottom: 8 }}
       >
-        {loading && (
-          <ActivityIndicator size="small" color={theme.colors.primary} />
-        )}
         <Card
           style={{
             marginBottom: 8,
@@ -87,7 +89,6 @@ export const ChequeList = () => {
                     variant="titleMedium"
                     style={{ color: theme.colors.primary, fontWeight: "bold" }}
                   >
-                    {/* R$ {item?.valor || ""} */}
                     R$ {item?.valor_original || ""}
                   </Text>
                 </View>
@@ -102,14 +103,16 @@ export const ChequeList = () => {
                     variant="titleMedium"
                     style={{ color: theme.colors.text }}
                   >
-                    {/* {item?.datacheque.split("-").reverse().join("/") || ""} */}
                     {formatarVencimento(item?.vencimento) || ""}
                   </Text>
                   <Text
                     variant="titleMedium"
                     style={{ color: theme.colors.text }}
                   >
-                   {item?.status ? item.status.charAt(0).toUpperCase() + item.status.slice(1).toLowerCase() : ""}
+                    {item?.status
+                      ? item.status.charAt(0).toUpperCase() +
+                        item.status.slice(1).toLowerCase()
+                      : ""}
                   </Text>
                 </View>
               </View>
@@ -120,22 +123,40 @@ export const ChequeList = () => {
     );
   };
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getCheques();
-        setCheques(data);
-        setLoading(false);
-      } catch (err) {
-        console.log("Erro ao carregar cheques:", err);
-      }
+  async function loadData() {
+    try {
+      const data = await getCheques();
+      setCheques(data);
+      setLoading(false);
+    } catch (err) {
+      console.log("Erro ao carregar cheques:", err);
+    } finally {
+      setLoading(false);
+      setIsRefreshing(false);
     }
-    fetchData();
+  }
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    loadData();
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
+
+  if (loading) {
+    return (
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={{ marginTop: 16 }}>Carregando cheques...</Text>
+      </View>
+    );
+  }
 
   if (!cheques.length) {
     return (
-      <View style={[styles.container, { backgroundColor: colors.primary }]}>
+      <View>
         <Text variant="titleMedium">Nenhum cheque encontrado</Text>
       </View>
     );
@@ -143,6 +164,14 @@ export const ChequeList = () => {
 
   return (
     <FlatList
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          colors={[theme.colors.primary]}
+          tintColor={theme.colors.primary}
+        />
+      }
       data={cheques}
       renderItem={renderItem}
       keyExtractor={(item, index) => `user-${item?.id || index}`}
@@ -162,5 +191,4 @@ const styles = StyleSheet.create({
   listContainer: {
     paddingBottom: 20,
   },
-  card: {},
 });

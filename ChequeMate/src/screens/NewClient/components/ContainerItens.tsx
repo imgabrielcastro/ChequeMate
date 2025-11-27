@@ -18,8 +18,7 @@ import { useEmailField } from "../../../hooks/useEmailField";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import CitySelector from "./ModalCity";
 import { City } from "./ModalCity";
-import api from "../../../services/apiViaCep";
-import { useNavigation } from "@react-navigation/native";
+import { postClientes } from "../../../services/clientService";
 
 interface ContainerItensProps {
   onSubmit: (email: string) => void;
@@ -31,18 +30,12 @@ export default function ContainerItens({
   navigation,
 }: ContainerItensProps) {
   const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
 
   const [phone, setPhone] = useState("");
-  const [phoneError, setPhoneError] = useState("");
 
   const { email, error, onChange: onEmailChange } = useEmailField();
 
-  const [Cidade, setCidade] = useState("");
-  const [CidadeError, setCidadeError] = useState("");
-
   const [dataNasc, setDataNasc] = useState("");
-  const [dataNascError, setDataNascError] = useState("");
 
   const [date, setDate] = useState(new Date());
   const [tempDate, setTempDate] = useState(new Date());
@@ -55,6 +48,7 @@ export default function ContainerItens({
   const showError =
     (submitAttempted && !email.trim()) || (submitAttempted && error) || error;
   const errorMessage = error || "Informe seu e-mail";
+
 
   const showDatepicker = () => {
     Keyboard.dismiss();
@@ -88,6 +82,13 @@ export default function ContainerItens({
     setDate(tempDate);
     setDataNasc(tempDate.toLocaleDateString("pt-BR"));
     setDateModalVisible(false);
+  };
+
+  const payLoad = {
+    nome: name,
+    email: email,
+    telefone: phone,
+    data_nascimento: dataNasc,
   };
 
   const handleSubmit = () => {
@@ -130,14 +131,12 @@ export default function ContainerItens({
               value={name}
               setValue={setName}
               title="Nome:"
-              error={nameError}
             />
 
             <PhoneInput
               value={phone}
               setValue={setPhone}
               title="Telefone"
-              error={phoneError}
             />
 
             <TopTitleInput
@@ -178,7 +177,6 @@ export default function ContainerItens({
                 value={dataNasc}
                 onChangeText={setDataNasc}
                 title="Data de nascimento:"
-                error={dataNascError}
                 editable={false}
                 pointerEvents="none"
               />

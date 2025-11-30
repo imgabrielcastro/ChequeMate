@@ -96,7 +96,7 @@ export default function ChequeList({ clienteId }: ChequeListProps) {
   return (
     <VStack style={{ padding: 12, gap: 8 }}>
       <Text
-        variant="titleLarge"
+        variant="titleMedium"
         style={{ color: theme.colors.primary, fontWeight: "bold" }}
       >
         Cheques do Cliente ({cheques.length})

@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  RefreshControl,
+} from "react-native";
 import { useTheme, Text, Card, Avatar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 import { theme } from "../../../themes/theme";
 import { getClientes } from "../../../services/clientService";
-import { TextInputMask } from 'react-native-masked-text';
+import { TextInputMask } from "react-native-masked-text";
 
 interface Usuario {
   id: number;
@@ -17,7 +24,7 @@ interface ClientListProps {
   searchQuery?: string;
 }
 
-export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
+export const ClientList = ({ searchQuery = "" }: ClientListProps) => {
   const { colors } = useTheme();
   const navigation = useNavigation<any>();
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -47,7 +54,7 @@ export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
   useEffect(() => {
     if (searchQuery) {
       const filtered = usuarios.filter(
-        user => 
+        (user) =>
           user.nome.toLowerCase().includes(searchQuery.toLowerCase()) ||
           (user.telefone && user.telefone.includes(searchQuery))
       );
@@ -58,8 +65,12 @@ export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
   }, [searchQuery, usuarios]);
 
   useEffect(() => {
-    loadData(); 
+    loadData();
   }, []);
+
+  const handleClientPress = (clienteId: number) => {
+    navigation.navigate("ClientProfile", { clienteId });
+  };
 
   if (loading && !isRefreshing) {
     return (
@@ -79,10 +90,16 @@ export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
 
   const renderItem = ({ item }: { item: Usuario }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("ClientProfile")}
+      onPress={() => handleClientPress(item.id)}
       style={{ marginBottom: 8 }}
     >
-      <Card style={{ marginBottom: 8, borderRadius: 12, backgroundColor: theme.colors.input }}>
+      <Card
+        style={{
+          marginBottom: 8,
+          borderRadius: 12,
+          backgroundColor: theme.colors.input,
+        }}
+      >
         <Card.Content>
           <View style={{ flexDirection: "row", alignItems: "center", gap: 12 }}>
             <Avatar.Icon
@@ -92,17 +109,24 @@ export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
               style={{ backgroundColor: theme.colors.background }}
             />
             <View style={{ flex: 1 }}>
-              <Text variant="titleMedium" style={{ fontWeight: "bold", marginBottom: 4, color: theme.colors.primary }}>
+              <Text
+                variant="titleMedium"
+                style={{
+                  fontWeight: "bold",
+                  marginBottom: 4,
+                  color: theme.colors.primary,
+                }}
+              >
                 {item.nome}
               </Text>
 
               <View style={{ flexDirection: "row", gap: 8 }}>
                 <TextInputMask
-                  type={'cel-phone'}
+                  type={"cel-phone"}
                   options={{
-                    maskType: 'BRL',
+                    maskType: "BRL",
                     withDDD: true,
-                    dddMask: '(99) ',
+                    dddMask: "(99) ",
                   }}
                   value={item.telefone}
                   style={{

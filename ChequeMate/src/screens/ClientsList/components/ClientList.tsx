@@ -79,7 +79,7 @@ export const ClientList = ({ searchQuery = '' }: ClientListProps) => {
 
   const renderItem = ({ item }: { item: Usuario }) => (
     <TouchableOpacity
-      onPress={() => navigation.navigate("PerfilCliente")}
+      onPress={() => navigation.navigate("ClientProfile")}
       style={{ marginBottom: 8 }}
     >
       <Card style={{ marginBottom: 8, borderRadius: 12, backgroundColor: theme.colors.input }}>

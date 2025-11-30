@@ -3,6 +3,7 @@ import { AppTabs } from "./AppTabs";
 import Settings from "../screens/Settings";
 import NewClient from "../screens/NewClient";
 import Login from "../screens/Login";
+import ClientProfile from "../screens/ClientProfile"
 
 export type RootStackParamList = {
   Login: undefined;
@@ -10,6 +11,7 @@ export type RootStackParamList = {
   Settings: undefined;
   ChangePassword: undefined;
   NewClient: undefined;
+  ClientProfile: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -21,6 +23,7 @@ export default function RootStack() {
       <Stack.Screen name="AppTabs" component={AppTabs} />
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="NewClient" component={NewClient} />
+      <Stack.Screen name="ClientProfile" component={ClientProfile} />
     </Stack.Navigator>
   );
 }

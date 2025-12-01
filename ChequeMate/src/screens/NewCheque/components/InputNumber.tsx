@@ -1,6 +1,5 @@
 import React from "react";
 import { TextInput } from "react-native-paper";
-import { TextInputMask } from "react-native-masked-text";
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
 import { Text } from "react-native-paper";
@@ -12,7 +11,7 @@ interface PhoneInputProps {
   error?: string;
 }
 
-export default function PhoneInput({
+export default function InputNumber({
   value,
   setValue,
   title,
@@ -25,33 +24,26 @@ export default function PhoneInput({
       </Text>
 
       <TextInput
-        render={({ onChangeText, ...props }) => (
-          <TextInputMask
-            type="cel-phone"
-            options={{
-              maskType: "BRL",
-              withDDD: true,
-              dddMask: "(99) ",
-            }}
-            value={value}
-            onChangeText={setValue}
-            keyboardType="phone-pad"
-            keyboardAppearance="dark"
-            style={{
-              color: theme.colors.text,
-              flex: 1,
-              padding: 12,
-              backgroundColor: "transparent",
-            }}
-          />
-        )}
         value={value}
         onChangeText={setValue}
-        style={{ backgroundColor: theme.colors.input, height: 38 }}
+        keyboardType="phone-pad"
+        keyboardAppearance="dark"
+        style={{
+          backgroundColor: theme.colors.input,
+          height: 38,
+        }}
+        textColor={theme.colors.text}
         mode="outlined"
         outlineColor={theme.colors.outline}
-        activeOutlineColor={theme.colors.primary}
+        activeOutlineColor={theme.colors.input}
         error={!!error}
+        theme={{
+          colors: {
+            text: theme.colors.text,
+            onSurface: theme.colors.text,
+            onSurfaceVariant: theme.colors.text,
+          },
+        }}
       />
 
       {error && (

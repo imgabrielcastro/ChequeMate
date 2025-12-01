@@ -20,3 +20,13 @@ export async function getChequesByClienteId(clienteId: number) {
     console.log(`Encontrados ${chequesDoCliente.length} cheques`);
     return chequesDoCliente;
 }
+
+export async function createCheque(chequeData: any) {
+    const response = await api.post("/cheques", chequeData);
+    return response.data;
+}
+
+export async function getClientesForCheque() {
+    const response = await api.get("/clients");
+    return response.data;
+}

@@ -2,7 +2,6 @@ import React from "react";
 import { StyleSheet } from "react-native";
 import { View } from "react-native-animatable";
 import { TextInput, Text } from "react-native-paper";
-import Icon from "react-native-vector-icons/MaterialIcons";
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
 

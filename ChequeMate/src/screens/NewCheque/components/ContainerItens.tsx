@@ -1,48 +1,65 @@
 import { theme } from "../../../themes/theme";
 import VStack from "../../../components/Stacks/VStack";
-import { View, ScrollView, KeyboardAvoidingView, Platform } from "react-native";
+import {
+  View,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+  Alert,
+} from "react-native";
 import TextTitle from "../../../components/Texts/TextTitle";
 import TopTitleInput from "../../../components/Inputs/TopTitleInput";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ButtonSave from "../../../components/Buttons/ButtonSave";
-import PhoneInput from "./PhoneInput";
 import DataPicker from "./DataPicker";
 import { TouchableOpacity } from "react-native";
 import { Keyboard } from "react-native";
 import { TouchableWithoutFeedback, StyleSheet } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Text } from "react-native-paper";
-import { Alert } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { useEmailField } from "../../../hooks/useEmailField";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import CitySelector from "./ModalCity";
-import { City } from "./ModalCity";
-import { postClientes } from "../../../services/clientService";
+import ClientSelector from "./ClientSelector";
+import PercentageInput from "./PercentageInput";
+import InputNumber from "./InputNumber";
+import { createCheque } from "../../../services/chequesService";
 
 interface ContainerItensProps {
-  onSubmit: (email: string) => void;
   navigation: any;
 }
 
-export default function ContainerItens({
-  onSubmit,
-  navigation,
-}: ContainerItensProps) {
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const { email, error, onChange: onEmailChange } = useEmailField();
-  const [dataNasc, setDataNasc] = useState("");
+interface Cliente {
+  id: number;
+  nome: string;
+  telefone: string;
+}
+
+export default function ContainerItens({ navigation }: ContainerItensProps) {
+  const [selectedClient, setSelectedClient] = useState<Cliente | null>(null);
+  const [valorOriginal, setValorOriginal] = useState("");
+  const [porcentagemJuros, setPorcentagemJuros] = useState("");
+  const [valorComJuros, setValorComJuros] = useState("");
+  const [numeroCheque, setNumeroCheque] = useState("");
+  const [banco, setBanco] = useState("");
+  const [vencimento, setVencimento] = useState("");
   const [date, setDate] = useState(new Date());
   const [tempDate, setTempDate] = useState(new Date());
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
-  const [selectedCity, setSelectedCity] = useState<City | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const showError =
-    (submitAttempted && !email.trim()) || (submitAttempted && error) || error;
-  const errorMessage = error || "Informe seu e-mail";
+  useEffect(() => {
+    if (valorOriginal && porcentagemJuros) {
+      const valor = parseFloat(valorOriginal.replace(",", "."));
+      const juros = parseFloat(porcentagemJuros.replace(",", "."));
+
+      if (!isNaN(valor) && !isNaN(juros)) {
+        const valorComJurosCalculado = valor + (valor * juros) / 100;
+        setValorComJuros(valorComJurosCalculado.toFixed(2).replace(".", ","));
+      }
+    } else {
+      setValorComJuros("");
+    }
+  }, [valorOriginal, porcentagemJuros]);
 
   const showDatepicker = () => {
     Keyboard.dismiss();
@@ -53,7 +70,6 @@ export default function ContainerItens({
 
   const hideDatepicker = () => {
     setDateModalVisible(false);
-    setTimeout(() => {}, 100);
   };
 
   const onChangeDate = (event: any, selectedDate: any) => {
@@ -62,65 +78,70 @@ export default function ContainerItens({
   };
 
   const handleConfirmDate = () => {
-    if (tempDate > new Date()) {
-      Alert.alert(
-        "Erro",
-        "A data de nascimento não pode ser maior que a data atual."
-      );
-      setTempDate(new Date());
-      setDataNasc("");
-      setDateModalVisible(false);
-      return;
-    }
-
     setDate(tempDate);
-    setDataNasc(tempDate.toLocaleDateString("pt-BR"));
+    setVencimento(tempDate.toLocaleDateString("pt-BR"));
     setDateModalVisible(false);
+  };
+
+  const validateForm = () => {
+    if (!selectedClient) {
+      return "Selecione um cliente";
+    }
+    if (!valorOriginal.trim()) {
+      return "Informe o valor do cheque";
+    }
+    if (!vencimento.trim()) {
+      return "Informe a data de vencimento";
+    }
+    if (!numeroCheque.trim()) {
+      return "Informe o número do cheque";
+    }
+    return null;
   };
 
   const handleSubmit = async () => {
     setSubmitAttempted(true);
 
-    if (!name.trim()) {
-      Alert.alert("Erro", "Por favor, informe o nome do cliente");
-      return;
-    }
-
-    if (!phone.trim()) {
-      Alert.alert("Erro", "Por favor, informe o telefone do cliente");
-      return;
-    }
-
-    if (email.trim() && error) {
-      Alert.alert("Erro", "Por favor, informe um e-mail válido");
+    const error = validateForm();
+    if (error) {
+      Alert.alert("Erro", error);
       return;
     }
 
     try {
       setLoading(true);
 
-      const clienteData = {
-        nome: name,
-        telefone: phone,
-        email: email.trim() || undefined,
-        data_nascimento: dataNasc || undefined,
-        cidade: selectedCity?.cidade || undefined,
-        estado: selectedCity?.estado || undefined,
+      const chequeData = {
+        numero_cheque: numeroCheque,
+        valor_original: parseFloat(valorOriginal.replace(",", ".")),
+        valor_com_juros: valorComJuros
+          ? parseFloat(valorComJuros.replace(",", "."))
+          : parseFloat(valorOriginal.replace(",", ".")),
+        vencimento: new Date(date).toISOString().split("T")[0],
+        data_entrada: new Date().toISOString().split("T")[0],
+        status: "pendente",
+        cliente_id: selectedClient!.id,
       };
 
-      console.log("Enviando dados do cliente:", clienteData);
+      const response = await createCheque(chequeData);
 
-      const response = await postClientes(clienteData);
-      console.log("Cliente criado com sucesso:", response);
+      Alert.alert("Sucesso", "Cheque cadastrado com sucesso!");
 
-      Alert.alert("Sucesso", "Cliente cadastrado com sucesso!");
+      setSelectedClient(null);
+      setValorOriginal("");
+      setPorcentagemJuros("");
+      setValorComJuros("");
+      setNumeroCheque("");
+      setBanco("");
+      setVencimento("");
+      setSubmitAttempted(false);
 
       navigation.goBack();
     } catch (error: any) {
-      console.error("Erro ao cadastrar cliente:", error);
+      console.error("Erro ao cadastrar cheque:", error);
       Alert.alert(
         "Erro",
-        "Não foi possível cadastrar o cliente. Tente novamente."
+        "Não foi possível cadastrar o cheque. Tente novamente."
       );
     } finally {
       setLoading(false);
@@ -145,56 +166,73 @@ export default function ContainerItens({
       >
         <View style={{ padding: 16, paddingBottom: 50 }}>
           <View style={{ alignItems: "center", marginBottom: 32 }}>
-            <TextTitle title="Informações" color={theme.colors.primary} />
+            <TextTitle title="Cadastrar Cheque" color={theme.colors.primary} />
           </View>
 
           <VStack style={{ gap: 16 }}>
-            <TopTitleInput value={name} setValue={setName} title="Nome:" />
-
-            <PhoneInput value={phone} setValue={setPhone} title="Telefone" />
-
-            <TopTitleInput
-              value={email}
-              setValue={onEmailChange}
-              title="E-mail:"
-              error={showError ? errorMessage : undefined}
+            <ClientSelector
+              selectedClient={selectedClient}
+              onSelectClient={setSelectedClient}
+              error={
+                submitAttempted && !selectedClient
+                  ? "Selecione um cliente"
+                  : undefined
+              }
             />
-
-            {showError && (
-              <Text
-                style={{
-                  color: "red",
-                  marginTop: -32,
-                  marginBottom: -24,
-                  fontSize: 14,
-                  padding: 12,
-                }}
-              >
-                {errorMessage}
-              </Text>
-            )}
-
-            <GestureHandlerRootView style={{ flex: 1 }}>
-              <View>
-                <CitySelector
-                  selectedCity={selectedCity}
-                  onSelectCity={(city) => setSelectedCity(city)}
-                />
-              </View>
-            </GestureHandlerRootView>
 
             <TouchableOpacity
               onPress={showDatepicker}
               disabled={dateModalVisible}
             >
               <DataPicker
-                value={dataNasc}
-                onChangeText={setDataNasc}
-                title="Data de nascimento:"
+                value={vencimento}
+                onChangeText={setVencimento}
+                title="Data de vencimento:"
                 editable={false}
                 pointerEvents="none"
+                error={
+                  submitAttempted && !vencimento
+                    ? "Informe a data de vencimento"
+                    : undefined
+                }
               />
             </TouchableOpacity>
+
+            <InputNumber
+              value={valorOriginal}
+              setValue={setValorOriginal}
+              title="Valor do cheque:"
+              error={
+                submitAttempted && !valorOriginal
+                  ? "Informe o valor do cheque"
+                  : undefined
+              }
+            />
+
+            <PercentageInput
+              value={porcentagemJuros}
+              setValue={setPorcentagemJuros}
+              title="Porcentagem de juros:"
+            />
+
+            <TopTitleInput
+              value={valorComJuros || valorOriginal}
+              setValue={() => {}}
+              title="Valor com juros:"
+            />
+
+            <InputNumber
+              value={numeroCheque}
+              setValue={setNumeroCheque}
+              title="Número do cheque:"
+              error={
+                submitAttempted && !numeroCheque
+                  ? "Informe o número do cheque"
+                  : undefined
+              }
+            />
+
+            <TopTitleInput value={banco} setValue={setBanco} title="Banco:" />
 
             {dateModalVisible && (
               <View
@@ -205,6 +243,7 @@ export default function ContainerItens({
                   right: 0,
                   bottom: 0,
                   zIndex: 1,
+                  marginBottom: 180,
                 }}
                 pointerEvents="box-none"
               >
@@ -268,8 +307,9 @@ export default function ContainerItens({
               </View>
             )}
 
+            {/* Botão Salvar */}
             <ButtonSave
-              value={loading ? "Salvando..." : "Salvar"}
+              value={loading ? "Salvando..." : "Salvar Cheque"}
               onPress={handleSubmit}
             />
           </VStack>

@@ -54,7 +54,7 @@ export const ChequeList = () => {
 
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("PerfilCliente")}
+        onPress={() => navigation.navigate("NewCheque")}
         style={{ marginBottom: 8 }}
       >
         <Card

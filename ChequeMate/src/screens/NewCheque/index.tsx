@@ -4,18 +4,18 @@ import ContainerItens from "./components/ContainerItens";
 import BackAndTitle from "../../components/Texts/BackAndTitle";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
-export default function NewClient({ navigation }: { navigation: any }) {
+export default function NewCheque({ navigation }: { navigation: any }) {
     return (
       <VStack style={{ backgroundColor: theme.colors.background }}>
         <VStack style={{ paddingHorizontal: 20}}>
           <BackAndTitle
-            title="Novo cliente"
+            title="Novo cheque"
             icon={faArrowLeft}
             navigation={navigation}
           />
         </VStack>
         <VStack style={{marginBottom: 180}}>
-        <ContainerItens onSubmit={(email: string) => console.log(email)} navigation={navigation} />
+        <ContainerItens navigation={navigation} />
         </VStack>
       </VStack>
     );

@@ -4,6 +4,7 @@ import Settings from "../screens/Settings";
 import NewClient from "../screens/NewClient";
 import Login from "../screens/Login";
 import ClientProfile from "../screens/ClientProfile"
+import NewCheque from "../screens/NewCheque"
 
 export type RootStackParamList = {
   Login: undefined;
@@ -12,6 +13,7 @@ export type RootStackParamList = {
   ChangePassword: undefined;
   NewClient: undefined;
   ClientProfile: undefined;
+  NewCheque: undefined;
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -24,6 +26,7 @@ export default function RootStack() {
       <Stack.Screen name="Settings" component={Settings} />
       <Stack.Screen name="NewClient" component={NewClient} />
       <Stack.Screen name="ClientProfile" component={ClientProfile} />
+      <Stack.Screen name="NewCheque" component={NewCheque} />
     </Stack.Navigator>
   );
 }

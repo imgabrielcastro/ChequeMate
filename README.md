@@ -43,18 +43,7 @@ npm install
 # Execute no Android
 npx react-native run-android
 
-# Execute no iOS
-npx react-native run-ios
-⚙️ Configuração da API
-No arquivo src/services/api.js:
 
-javascript
-// Altere para a URL do seu backend
-const baseURL = 'http://SEU_IP:3000/api';
-Backend Necessário
-Você precisa ter o backend rodando com estes endpoints:
-
-text
 POST   /api/auth/login      - Login de usuário
 GET    /api/cheques         - Listar cheques
 GET    /api/cheques/:id     - Detalhes do cheque

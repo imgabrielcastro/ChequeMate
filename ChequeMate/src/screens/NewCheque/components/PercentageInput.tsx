@@ -17,16 +17,13 @@ export default function PercentageInput({
   error,
 }: PercentageInputProps) {
   const handleChange = (text: string) => {
-    // Permite apenas números e ponto decimal
     const cleaned = text.replace(/[^0-9.]/g, "");
 
-    // Permite apenas um ponto decimal
     const parts = cleaned.split(".");
     if (parts.length > 2) {
       return;
     }
 
-    // Limita a 2 casas decimais após o ponto
     if (parts[1] && parts[1].length > 2) {
       return;
     }
@@ -46,6 +43,7 @@ export default function PercentageInput({
         keyboardType="decimal-pad"
         style={{ backgroundColor: theme.colors.input, height: 38 }}
         mode="outlined"
+        textColor={theme.colors.text}
         outlineColor={theme.colors.outline}
         activeOutlineColor={theme.colors.primary}
         error={!!error}

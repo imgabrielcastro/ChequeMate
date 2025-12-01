@@ -16,7 +16,7 @@ export default function ContainerItens() {
           height: "100%",
           borderTopLeftRadius: 30,
           borderTopRightRadius: 30,
-          marginTop: -20, 
+          marginTop: -40, 
         }}
       >
         <View style={{ alignItems: "center", paddingVertical: 12 }}>

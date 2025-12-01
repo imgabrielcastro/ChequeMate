@@ -164,12 +164,12 @@ export default function ContainerItens({ navigation }: ContainerItensProps) {
         keyboardShouldPersistTaps="handled"
         scrollEnabled={!dateModalVisible}
       >
-        <View style={{ padding: 16, paddingBottom: 50 }}>
+        <View style={{ padding: 16, paddingBottom: 50, marginBottom: 50 }}>
           <View style={{ alignItems: "center", marginBottom: 32 }}>
             <TextTitle title="Cadastrar Cheque" color={theme.colors.primary} />
           </View>
 
-          <VStack style={{ gap: 16 }}>
+          <View style={{ gap: 16 }}>
             <ClientSelector
               selectedClient={selectedClient}
               onSelectClient={setSelectedClient}
@@ -306,13 +306,11 @@ export default function ContainerItens({ navigation }: ContainerItensProps) {
                 </Animatable.View>
               </View>
             )}
-
-            {/* Botão Salvar */}
             <ButtonSave
-              value={loading ? "Salvando..." : "Salvar Cheque"}
+              value={loading ? "Salvando..." : "Salvar"}
               onPress={handleSubmit}
             />
-          </VStack>
+          </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>

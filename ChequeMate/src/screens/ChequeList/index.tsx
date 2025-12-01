@@ -5,17 +5,21 @@ import { faGear } from "@fortawesome/free-solid-svg-icons";
 import { useNavigation } from "@react-navigation/native";
 import TittleWithIcon from "../../components/Texts/TitleWithIcon";
 import { View } from "react-native-animatable";
-import ButtonSave from "../../components/Buttons/ButtonSave";
+import AddButton from "../../components/Buttons/AddButton";
 
 export default function ChequesScreen() {
   const navigation = useNavigation();
   return (
-    <VStack style={{ backgroundColor: theme.colors.background }}>
-     <TittleWithIcon title="Cheques" icon={faGear} navigation={navigation} />
-     <View style={{marginBottom: 350}}>
-      <ContainerItens />    
-      <ButtonSave value="Salvar" />
-     </View>
-  </VStack>
-);
+    <View style={{ flex: 1, backgroundColor: theme.colors.background }}>
+      <VStack style={{ flex: 1 }}>
+        <TittleWithIcon title="Cheques" icon={faGear} navigation={navigation} />
+        <View>
+          <ContainerItens />
+        </View>
+      </VStack>
+      <VStack>
+        <AddButton page="NewCheque" />
+      </VStack>
+    </View>
+  );
 }

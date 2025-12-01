@@ -65,13 +65,31 @@ export default function ClientSelector({
 
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <TextInput
-          value={selectedClient?.nome || "Selecione um cliente..."}
+          value={selectedClient?.nome || " "}
+          placeholder="Selecione um cliente..."
           mode="outlined"
-          style={{ backgroundColor: theme.colors.input, height: 38 }}
+          style={[
+            {
+              backgroundColor: theme.colors.input,
+              height: 40,
+            },
+            !selectedClient?.nome && { borderColor: theme.colors.outline },
+          ]}
+          textColor={theme.colors.text}
           outlineColor={theme.colors.outline}
           activeOutlineColor={theme.colors.primary}
           editable={false}
           pointerEvents="none"
+          theme={{
+            colors: {
+              onSurfaceVariant: theme.colors.text,
+              onSurface: theme.colors.text,
+              onSurfaceDisabled: theme.colors.text,
+              primary: theme.colors.primary,
+              placeholder: theme.colors.text,
+              text: theme.colors.text,
+            },
+          }}
           right={
             <TextInput.Icon icon="chevron-down" color={theme.colors.text} />
           }

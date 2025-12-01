@@ -29,17 +29,20 @@ export const ChequeList = () => {
   const [loading, setLoading] = useState(true);
   const [cheques, setCheques] = useState<Cheque[]>([]);
 
+  // ✅ FUNÇÃO PARA NAVEGAR PARA DETALHES
+  const handleChequePress = (cheque: Cheque) => {
+    navigation.navigate("ChequeDetails", { chequeId: cheque.id });
+  };
+
   const renderItem = ({ item }: { item: Cheque }) => {
     const formatarVencimento = (dataISO: string) => {
       if (!dataISO) return "";
 
       try {
         const data = new Date(dataISO);
-
         const dia = String(data.getDate()).padStart(2, "0");
         const mes = String(data.getMonth() + 1).padStart(2, "0");
         const ano = data.getFullYear();
-
         return `${dia}/${mes}/${ano}`;
       } catch (error) {
         console.log("Erro ao formatar data:", error);
@@ -47,14 +50,25 @@ export const ChequeList = () => {
       }
     };
 
-    const handleRefresh = () => {
-      setIsRefreshing(true);
-      loadData();
+    // ✅ COR DO STATUS
+    const getStatusColor = (status: string) => {
+      switch (status?.toLowerCase()) {
+        case "pago":
+          return "#4CAF50"; // Verde
+        case "cancelado":
+          return "#F44336"; // Vermelho
+        case "vencido":
+          return "#FF9800"; // Laranja
+        case "pendente":
+          return "#2196F3"; // Azul
+        default:
+          return theme.colors.text;
+      }
     };
 
     return (
       <TouchableOpacity
-        onPress={() => navigation.navigate("NewCheque")}
+        onPress={() => handleChequePress(item)} // ✅ NAVEGAÇÃO PARA DETALHES
         style={{ marginBottom: 8 }}
       >
         <Card
@@ -89,7 +103,7 @@ export const ChequeList = () => {
                     variant="titleMedium"
                     style={{ color: theme.colors.primary, fontWeight: "bold" }}
                   >
-                    R$ {item?.valor_original || ""}
+                    R$ {item?.valor_original || "0,00"}
                   </Text>
                 </View>
                 <View
@@ -107,7 +121,10 @@ export const ChequeList = () => {
                   </Text>
                   <Text
                     variant="titleMedium"
-                    style={{ color: theme.colors.text }}
+                    style={{
+                      color: getStatusColor(item?.status),
+                      fontWeight: "bold",
+                    }}
                   >
                     {item?.status
                       ? item.status.charAt(0).toUpperCase() +
@@ -127,7 +144,6 @@ export const ChequeList = () => {
     try {
       const data = await getCheques();
       setCheques(data);
-      setLoading(false);
     } catch (err) {
       console.log("Erro ao carregar cheques:", err);
     } finally {
@@ -156,7 +172,7 @@ export const ChequeList = () => {
 
   if (!cheques.length) {
     return (
-      <View>
+      <View style={[styles.container, { backgroundColor: colors.background }]}>
         <Text variant="titleMedium">Nenhum cheque encontrado</Text>
       </View>
     );
@@ -174,7 +190,7 @@ export const ChequeList = () => {
       }
       data={cheques}
       renderItem={renderItem}
-      keyExtractor={(item, index) => `user-${item?.id || index}`}
+      keyExtractor={(item, index) => `cheque-${item?.id || index}`}
       contentContainerStyle={styles.listContainer}
       style={{ flex: 1 }}
       showsVerticalScrollIndicator={false}
